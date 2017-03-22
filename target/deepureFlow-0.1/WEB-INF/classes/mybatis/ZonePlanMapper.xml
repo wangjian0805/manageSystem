@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IZonePlanMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.system.ZonePlan" >
+    <result column="ZONE_ID" property="zoneId" jdbcType="INTEGER" />
+    <result column="PLAN_TYPE" property="planType" jdbcType="TINYINT" />
+    <result column="PLAN_START_DAY" property="planStartDay" jdbcType="INTEGER" />
+    <result column="PLAN_END_DAY" property="planEndDay" jdbcType="INTEGER" />
+    <result column="PLAN_STATUS" property="planStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ZONE_ID, PLAN_TYPE, PLAN_START_DAY, PLAN_END_DAY, PLAN_STATUS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.system.ZonePlanExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from system_zone_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.system.ZonePlanExample" >
+    delete from system_zone_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.system.ZonePlan" >
+    insert into system_zone_plan (ZONE_ID, PLAN_TYPE, PLAN_START_DAY, 
+      PLAN_END_DAY, PLAN_STATUS)
+    values (#{zoneId,jdbcType=INTEGER}, #{planType,jdbcType=TINYINT}, #{planStartDay,jdbcType=INTEGER}, 
+      #{planEndDay,jdbcType=INTEGER}, #{planStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.system.ZonePlan" >
+    insert into system_zone_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="zoneId != null" >
+        ZONE_ID,
+      </if>
+      <if test="planType != null" >
+        PLAN_TYPE,
+      </if>
+      <if test="planStartDay != null" >
+        PLAN_START_DAY,
+      </if>
+      <if test="planEndDay != null" >
+        PLAN_END_DAY,
+      </if>
+      <if test="planStatus != null" >
+        PLAN_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="zoneId != null" >
+        #{zoneId,jdbcType=INTEGER},
+      </if>
+      <if test="planType != null" >
+        #{planType,jdbcType=TINYINT},
+      </if>
+      <if test="planStartDay != null" >
+        #{planStartDay,jdbcType=INTEGER},
+      </if>
+      <if test="planEndDay != null" >
+        #{planEndDay,jdbcType=INTEGER},
+      </if>
+      <if test="planStatus != null" >
+        #{planStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.system.ZonePlanExample" resultType="java.lang.Integer" >
+    select count(*) from system_zone_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_zone_plan
+    <set >
+      <if test="record.zoneId != null" >
+        ZONE_ID = #{record.zoneId,jdbcType=INTEGER},
+      </if>
+      <if test="record.planType != null" >
+        PLAN_TYPE = #{record.planType,jdbcType=TINYINT},
+      </if>
+      <if test="record.planStartDay != null" >
+        PLAN_START_DAY = #{record.planStartDay,jdbcType=INTEGER},
+      </if>
+      <if test="record.planEndDay != null" >
+        PLAN_END_DAY = #{record.planEndDay,jdbcType=INTEGER},
+      </if>
+      <if test="record.planStatus != null" >
+        PLAN_STATUS = #{record.planStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_zone_plan
+    set ZONE_ID = #{record.zoneId,jdbcType=INTEGER},
+      PLAN_TYPE = #{record.planType,jdbcType=TINYINT},
+      PLAN_START_DAY = #{record.planStartDay,jdbcType=INTEGER},
+      PLAN_END_DAY = #{record.planEndDay,jdbcType=INTEGER},
+      PLAN_STATUS = #{record.planStatus,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

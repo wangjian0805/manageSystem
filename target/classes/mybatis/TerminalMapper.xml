@@ -1,0 +1,913 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.ITerminalMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.user.Terminal" >
+    <id column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+    <result column="TERMINAL_NAME" property="terminalName" jdbcType="VARCHAR" />
+    <result column="TERMINAL_TYPE" property="terminalType" jdbcType="TINYINT" />
+    <result column="ERP_CODE" property="erpCode" jdbcType="VARCHAR" />
+    <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+    <result column="STATION_CODE" property="stationCode" jdbcType="VARCHAR" />
+    <result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+    <result column="ZONE_CODE" property="zoneCode" jdbcType="VARCHAR" />
+    <result column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+    <result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+    <result column="TERMINAL_STATUS" property="terminalStatus" jdbcType="TINYINT" />
+    <result column="PLAN_DATE" property="planDate" jdbcType="TIMESTAMP" />
+    <result column="JOIN_DATE" property="joinDate" jdbcType="TIMESTAMP" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="TERMINAL_ADDRESS" property="terminalAddress" jdbcType="VARCHAR" />
+    <result column="TERMINAL_DISTRICT" property="terminalDistrict" jdbcType="INTEGER" />
+    <result column="TERMINAL_CITY" property="terminalCity" jdbcType="INTEGER" />
+    <result column="TERMINAL_PROVINCE" property="terminalProvince" jdbcType="INTEGER" />
+    <result column="PRODUCT_CATEGORY_IDS" property="productCategoryIds" jdbcType="VARCHAR" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  
+   <resultMap id="queryTerminalForPageMap" type="com.tasly.deepureflow.domain.user.Terminal">
+		<id column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+		<result column="TERMINAL_NAME" property="terminalName"
+			jdbcType="VARCHAR" />
+		<result column="TERMINAL_TYPE" property="terminalType"
+			jdbcType="TINYINT" />
+		<result column="ERP_CODE" property="erpCode" jdbcType="VARCHAR" />
+
+		<result column="TERMINAL_STATUS" property="terminalStatus"
+			jdbcType="TINYINT" />
+		<result column="PLAN_DATE" property="planDate" jdbcType="TIMESTAMP" />
+		<result column="JOIN_DATE" property="joinDate" jdbcType="TIMESTAMP" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="TERMINAL_ADDRESS" property="terminalAddress"
+			jdbcType="VARCHAR" />
+		<result column="TERMINAL_DISTRICT" property="terminalDistrict"
+			jdbcType="INTEGER" />
+		<result column="TERMINAL_CITY" property="terminalCity"
+			jdbcType="INTEGER" />
+		<result column="TERMINAL_PROVINCE" property="terminalProvince"
+			jdbcType="INTEGER" />
+		<result column="PRODUCT_CATEGORY_IDS" property="productCategoryIds"
+			jdbcType="VARCHAR" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+
+		<association property="station"
+			javaType="com.tasly.deepureflow.domain.system.Station">
+			<id column="STATION_ID" property="stationId" jdbcType="INTEGER" />
+			<result column="STATION_CODE" property="stationCode" jdbcType="VARCHAR" />
+			<result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+			<result column="STA_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+		
+		<association property="office"
+			javaType="com.tasly.deepureflow.domain.system.Office">
+			<id column="OFFICE_ID" property="officeId" jdbcType="INTEGER" />
+			<result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+			<result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+			<result column="OFF_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+		
+		<association property="zone"
+			javaType="com.tasly.deepureflow.domain.system.Zone">
+			<id column="ZONE_ID" property="zoneId" jdbcType="INTEGER" />
+			<result column="ZONE_CODE" property="zoneCode" jdbcType="VARCHAR" />
+			<result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+			<result column="ZON_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="channel"
+			javaType="com.tasly.deepureflow.domain.system.Channel">
+			<id column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+			<result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+			<result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+			<result column="CHN_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="hierarchy"
+			javaType="com.tasly.deepureflow.domain.system.Hierarchy">
+			<id column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+			<result column="HIERARCHY_NAME" property="hierarchyName"
+				jdbcType="VARCHAR" />
+			<result column="HIERARCHY_NICK" property="hierarchyNick"
+				jdbcType="VARCHAR" />
+			<result column="HIE_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="agent"
+			javaType="com.tasly.deepureflow.domain.user.Agent">
+			<id column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+			<result column="AGENT_NAME" property="agentName" jdbcType="VARCHAR" />
+			<result column="AGE_ERP_CODE" property="erpCode" jdbcType="VARCHAR" />
+			<result column="AGE_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="user"
+			javaType="com.tasly.deepureflow.domain.user.User">
+			<id column="USER_ID" property="id" jdbcType="INTEGER" />
+			<result column="USER_NAME" property="username" jdbcType="VARCHAR" />
+			<result column="IS_ACTIVE" property="isactive" jdbcType="TINYINT" />
+		</association>
+
+		<association property="province"
+			javaType="com.tasly.deepureflow.domain.system.Place">
+			<id column="TERMINAL_PROVINCE" property="areacode" jdbcType="VARCHAR" />
+			<result column="PROVINCE_NAME" property="areaname" jdbcType="VARCHAR" />
+		</association>
+
+		<association property="district"
+			javaType="com.tasly.deepureflow.domain.system.Place">
+			<id column="TERMINAL_DISTRICT" property="areacode" jdbcType="VARCHAR" />
+			<result column="DISTRICT_NAME" property="areaname" jdbcType="VARCHAR" />
+		</association>
+
+		<association property="city"
+			javaType="com.tasly.deepureflow.domain.system.Place">
+			<id column="TERMINAL_CITY" property="areacode" jdbcType="VARCHAR" />
+			<result column="CITY_NAME" property="areaname" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    TERMINAL_ID, TERMINAL_NAME, TERMINAL_TYPE, ERP_CODE, AGENT_ID, STATION_CODE, OFFICE_CODE, 
+    ZONE_CODE, CHANNEL_ID, HIERARCHY_ID, TERMINAL_STATUS, PLAN_DATE, JOIN_DATE, CREATE_DATE, 
+    TERMINAL_ADDRESS, TERMINAL_DISTRICT, TERMINAL_CITY, TERMINAL_PROVINCE, PRODUCT_CATEGORY_IDS, 
+    IS_DELETE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.user.TerminalExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from user_terminal
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_terminal
+    where TERMINAL_ID = #{terminalId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_terminal
+    where TERMINAL_ID = #{terminalId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.user.TerminalExample" >
+    delete from user_terminal
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.user.Terminal" >
+    insert into user_terminal (TERMINAL_ID, TERMINAL_NAME, TERMINAL_TYPE, 
+      ERP_CODE, AGENT_ID, STATION_CODE, 
+      OFFICE_CODE, ZONE_CODE, CHANNEL_ID, 
+      HIERARCHY_ID, TERMINAL_STATUS, PLAN_DATE, 
+      JOIN_DATE, CREATE_DATE, TERMINAL_ADDRESS, 
+      TERMINAL_DISTRICT, TERMINAL_CITY, TERMINAL_PROVINCE, 
+      PRODUCT_CATEGORY_IDS, IS_DELETE)
+    values (#{terminalId,jdbcType=VARCHAR}, #{terminalName,jdbcType=VARCHAR}, #{terminalType,jdbcType=TINYINT}, 
+      #{erpCode,jdbcType=VARCHAR}, #{agentId,jdbcType=VARCHAR}, #{stationCode,jdbcType=VARCHAR}, 
+      #{officeCode,jdbcType=VARCHAR}, #{zoneCode,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, 
+      #{hierarchyId,jdbcType=VARCHAR}, #{terminalStatus,jdbcType=TINYINT}, #{planDate,jdbcType=TIMESTAMP}, 
+      #{joinDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, #{terminalAddress,jdbcType=VARCHAR}, 
+      #{terminalDistrict,jdbcType=INTEGER}, #{terminalCity,jdbcType=INTEGER}, #{terminalProvince,jdbcType=INTEGER}, 
+      #{productCategoryIds,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.user.Terminal" >
+    insert into user_terminal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="terminalId != null" >
+        TERMINAL_ID,
+      </if>
+      <if test="terminalName != null" >
+        TERMINAL_NAME,
+      </if>
+      <if test="terminalType != null" >
+        TERMINAL_TYPE,
+      </if>
+      <if test="erpCode != null" >
+        ERP_CODE,
+      </if>
+      <if test="agentId != null" >
+        AGENT_ID,
+      </if>
+      <if test="stationCode != null" >
+        STATION_CODE,
+      </if>
+      <if test="officeCode != null" >
+        OFFICE_CODE,
+      </if>
+      <if test="zoneCode != null" >
+        ZONE_CODE,
+      </if>
+      <if test="channelId != null" >
+        CHANNEL_ID,
+      </if>
+      <if test="hierarchyId != null" >
+        HIERARCHY_ID,
+      </if>
+      <if test="terminalStatus != null" >
+        TERMINAL_STATUS,
+      </if>
+      <if test="planDate != null" >
+        PLAN_DATE,
+      </if>
+      <if test="joinDate != null" >
+        JOIN_DATE,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="terminalAddress != null" >
+        TERMINAL_ADDRESS,
+      </if>
+      <if test="terminalDistrict != null" >
+        TERMINAL_DISTRICT,
+      </if>
+      <if test="terminalCity != null" >
+        TERMINAL_CITY,
+      </if>
+      <if test="terminalProvince != null" >
+        TERMINAL_PROVINCE,
+      </if>
+      <if test="productCategoryIds != null" >
+        PRODUCT_CATEGORY_IDS,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="terminalId != null" >
+        #{terminalId,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalName != null" >
+        #{terminalName,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalType != null" >
+        #{terminalType,jdbcType=TINYINT},
+      </if>
+      <if test="erpCode != null" >
+        #{erpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationCode != null" >
+        #{stationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="officeCode != null" >
+        #{officeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneCode != null" >
+        #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        #{channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyId != null" >
+        #{hierarchyId,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalStatus != null" >
+        #{terminalStatus,jdbcType=TINYINT},
+      </if>
+      <if test="planDate != null" >
+        #{planDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="joinDate != null" >
+        #{joinDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="terminalAddress != null" >
+        #{terminalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalDistrict != null" >
+        #{terminalDistrict,jdbcType=INTEGER},
+      </if>
+      <if test="terminalCity != null" >
+        #{terminalCity,jdbcType=INTEGER},
+      </if>
+      <if test="terminalProvince != null" >
+        #{terminalProvince,jdbcType=INTEGER},
+      </if>
+      <if test="productCategoryIds != null" >
+        #{productCategoryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.user.TerminalExample" resultType="java.lang.Integer" >
+    select count(*) from user_terminal
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_terminal
+    <set >
+      <if test="record.terminalId != null" >
+        TERMINAL_ID = #{record.terminalId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.terminalName != null" >
+        TERMINAL_NAME = #{record.terminalName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.terminalType != null" >
+        TERMINAL_TYPE = #{record.terminalType,jdbcType=TINYINT},
+      </if>
+      <if test="record.erpCode != null" >
+        ERP_CODE = #{record.erpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentId != null" >
+        AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stationCode != null" >
+        STATION_CODE = #{record.stationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.officeCode != null" >
+        OFFICE_CODE = #{record.officeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zoneCode != null" >
+        ZONE_CODE = #{record.zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelId != null" >
+        CHANNEL_ID = #{record.channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hierarchyId != null" >
+        HIERARCHY_ID = #{record.hierarchyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.terminalStatus != null" >
+        TERMINAL_STATUS = #{record.terminalStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.planDate != null" >
+        PLAN_DATE = #{record.planDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.joinDate != null" >
+        JOIN_DATE = #{record.joinDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createDate != null" >
+        CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.terminalAddress != null" >
+        TERMINAL_ADDRESS = #{record.terminalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.terminalDistrict != null" >
+        TERMINAL_DISTRICT = #{record.terminalDistrict,jdbcType=INTEGER},
+      </if>
+      <if test="record.terminalCity != null" >
+        TERMINAL_CITY = #{record.terminalCity,jdbcType=INTEGER},
+      </if>
+      <if test="record.terminalProvince != null" >
+        TERMINAL_PROVINCE = #{record.terminalProvince,jdbcType=INTEGER},
+      </if>
+      <if test="record.productCategoryIds != null" >
+        PRODUCT_CATEGORY_IDS = #{record.productCategoryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null" >
+        IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_terminal
+    set TERMINAL_ID = #{record.terminalId,jdbcType=VARCHAR},
+      TERMINAL_NAME = #{record.terminalName,jdbcType=VARCHAR},
+      TERMINAL_TYPE = #{record.terminalType,jdbcType=TINYINT},
+      ERP_CODE = #{record.erpCode,jdbcType=VARCHAR},
+      AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+      STATION_CODE = #{record.stationCode,jdbcType=VARCHAR},
+      OFFICE_CODE = #{record.officeCode,jdbcType=VARCHAR},
+      ZONE_CODE = #{record.zoneCode,jdbcType=VARCHAR},
+      CHANNEL_ID = #{record.channelId,jdbcType=VARCHAR},
+      HIERARCHY_ID = #{record.hierarchyId,jdbcType=VARCHAR},
+      TERMINAL_STATUS = #{record.terminalStatus,jdbcType=TINYINT},
+      PLAN_DATE = #{record.planDate,jdbcType=TIMESTAMP},
+      JOIN_DATE = #{record.joinDate,jdbcType=TIMESTAMP},
+      CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      TERMINAL_ADDRESS = #{record.terminalAddress,jdbcType=VARCHAR},
+      TERMINAL_DISTRICT = #{record.terminalDistrict,jdbcType=INTEGER},
+      TERMINAL_CITY = #{record.terminalCity,jdbcType=INTEGER},
+      TERMINAL_PROVINCE = #{record.terminalProvince,jdbcType=INTEGER},
+      PRODUCT_CATEGORY_IDS = #{record.productCategoryIds,jdbcType=VARCHAR},
+      IS_DELETE = #{record.isDelete,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.user.Terminal" >
+    update user_terminal
+    <set >
+      <if test="terminalName != null" >
+        TERMINAL_NAME = #{terminalName,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalType != null" >
+        TERMINAL_TYPE = #{terminalType,jdbcType=TINYINT},
+      </if>
+      <if test="erpCode != null" >
+        ERP_CODE = #{erpCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationCode != null" >
+        STATION_CODE = #{stationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="officeCode != null" >
+        OFFICE_CODE = #{officeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneCode != null" >
+        ZONE_CODE = #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        CHANNEL_ID = #{channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyId != null" >
+        HIERARCHY_ID = #{hierarchyId,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalStatus != null" >
+        TERMINAL_STATUS = #{terminalStatus,jdbcType=TINYINT},
+      </if>
+      <if test="planDate != null" >
+        PLAN_DATE = #{planDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="joinDate != null" >
+        JOIN_DATE = #{joinDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="terminalAddress != null" >
+        TERMINAL_ADDRESS = #{terminalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalDistrict != null" >
+        TERMINAL_DISTRICT = #{terminalDistrict,jdbcType=INTEGER},
+      </if>
+      <if test="terminalCity != null" >
+        TERMINAL_CITY = #{terminalCity,jdbcType=INTEGER},
+      </if>
+      <if test="terminalProvince != null" >
+        TERMINAL_PROVINCE = #{terminalProvince,jdbcType=INTEGER},
+      </if>
+      <if test="productCategoryIds != null" >
+        PRODUCT_CATEGORY_IDS = #{productCategoryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where TERMINAL_ID = #{terminalId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.user.Terminal" >
+    update user_terminal
+    set TERMINAL_NAME = #{terminalName,jdbcType=VARCHAR},
+      TERMINAL_TYPE = #{terminalType,jdbcType=TINYINT},
+      ERP_CODE = #{erpCode,jdbcType=VARCHAR},
+      AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      STATION_CODE = #{stationCode,jdbcType=VARCHAR},
+      OFFICE_CODE = #{officeCode,jdbcType=VARCHAR},
+      ZONE_CODE = #{zoneCode,jdbcType=VARCHAR},
+      CHANNEL_ID = #{channelId,jdbcType=VARCHAR},
+      HIERARCHY_ID = #{hierarchyId,jdbcType=VARCHAR},
+      TERMINAL_STATUS = #{terminalStatus,jdbcType=TINYINT},
+      PLAN_DATE = #{planDate,jdbcType=TIMESTAMP},
+      JOIN_DATE = #{joinDate,jdbcType=TIMESTAMP},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      TERMINAL_ADDRESS = #{terminalAddress,jdbcType=VARCHAR},
+      TERMINAL_DISTRICT = #{terminalDistrict,jdbcType=INTEGER},
+      TERMINAL_CITY = #{terminalCity,jdbcType=INTEGER},
+      TERMINAL_PROVINCE = #{terminalProvince,jdbcType=INTEGER},
+      PRODUCT_CATEGORY_IDS = #{productCategoryIds,jdbcType=VARCHAR},
+      IS_DELETE = #{isDelete,jdbcType=TINYINT}
+    where TERMINAL_ID = #{terminalId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="queryAllTerminal" resultMap="queryTerminalForPageMap"
+		parameterType="map">
+		SELECT
+			TER.TERMINAL_ID,
+			TER.TERMINAL_NAME,
+			TER.TERMINAL_TYPE,
+			TER.ERP_CODE,
+			TER.TERMINAL_ADDRESS,
+			TER.TERMINAL_STATUS,
+			TER.IS_DELETE,
+			TER.JOIN_DATE,
+			TER.PLAN_DATE,
+			TER.CREATE_DATE,
+			TER.PRODUCT_CATEGORY_IDS,
+			STA.STATION_ID,
+			STA.STATION_CODE,
+			STA.STATION_NAME,
+			STA.IS_DELETE AS STA_ISDELETE,
+			OFF.OFFICE_ID,
+			OFF.OFFICE_CODE,
+			OFF.OFFICE_NAME,
+			OFF.IS_DELETE AS OFF_ISDELETE, 
+			ZON.ZONE_ID,
+			ZON.ZONE_CODE,
+			ZON.ZONE_NAME,
+			ZON.IS_DELETE AS ZON_ISDELETE,
+			AGE.AGENT_ID,
+			AGE.AGENT_NAME,
+			AGE.ERP_CODE AS AGE_ERP_CODE,
+			AGE.IS_DELETE AS AGE_ISDELETE, 
+			CHN.CHANNEL_ID,
+			CHN.CHANNEL_NAME,
+			CHN.IS_DELETE AS CHN_ISDELETE, 
+			HIE.HIERARCHY_ID,
+			HIE.HIERARCHY_NAME,
+			HIE.HIERARCHY_NICK,
+			HIE.IS_DELETE AS HIE_ISDELETE, 
+			PRO.AreaCode AS TERMINAL_PROVINCE,
+			PRO.AreaName AS PROVINCE_NAME,
+			DIS.AreaCode AS TERMINAL_DISTRICT,
+			DIS.AreaName AS DISTRICT_NAME,
+			CIT.AreaCode AS TERMINAL_CITY,
+			CIT.AreaName AS CITY_NAME,
+			SUR.USER_ID,
+			SUR.USER_NAME,
+			SUR.IS_ACTIVE
+		FROM
+			user_terminal TER
+		LEFT JOIN user_agent AGE ON TER.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_channel CHN ON TER.CHANNEL_ID = CHN.CHANNEL_ID
+		LEFT JOIN system_station STA ON TER.STATION_CODE = STA.STATION_CODE AND STA.IS_DELETE=0
+		LEFT JOIN system_office OFF ON TER.OFFICE_CODE = OFF.OFFICE_CODE AND OFF.IS_DELETE=0
+		LEFT JOIN system_zone ZON ON TER.ZONE_CODE = ZON.ZONE_CODE AND ZON.IS_DELETE=0
+		LEFT JOIN system_hierarchy HIE ON TER.HIERARCHY_ID = HIE.HIERARCHY_ID
+		LEFT JOIN security_user_station SUS ON STA.STATION_CODE = SUS.STATION_CODE
+		LEFT JOIN security_user SUR ON SUS.USER_ID = SUR.USER_ID
+		AND SUR.USER_ID IS NOT NULL
+		LEFT JOIN system_area PRO ON TER.TERMINAL_PROVINCE = PRO.AreaCode
+		LEFT JOIN system_area DIS ON TER.TERMINAL_DISTRICT = DIS.AreaCode
+		LEFT JOIN system_area CIT ON TER.TERMINAL_CITY = CIT.AreaCode
+
+		<where>
+			TER.IS_DELETE = 0
+			<if test="queryTerminalCode!=null and queryTerminalCode!=''">
+				and TER.TERMINAL_ID like CONCAT('%',#{queryTerminalCode},'%')
+			</if>
+			<if test="queryTerminalName!=null and queryTerminalName!=''">
+				and TER.TERMINAL_NAME like CONCAT('%',#{queryTerminalName},'%')
+			</if>
+			<if test="queryAgent!=null and queryAgent!=''">
+				and SUR.USER_ID=#{queryAgent,jdbcType=VARCHAR}
+			</if>
+			<if test="queryTerminalStatus!=null and queryTerminalStatus!=''">
+				and TER.TERMINAL_STATUS=#{queryTerminalStatus,jdbcType=TINYINT}
+			</if>
+			<if test="queryTerminalType!=null and queryTerminalType!=''">
+				and TER.TERMINAL_TYPE=#{queryTerminalType,jdbcType=TINYINT}
+			</if>
+			<if test="queryChannelId!=null and queryChannelId!=''">
+				and TER.CHANNEL_ID=#{queryChannelId,jdbcType=VARCHAR}
+			</if>
+			<if test="queryHierarchyId!=null and queryHierarchyId!=''">
+				and TER.HIERARCHY_ID=#{queryHierarchyId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY TER.CREATE_DATE DESC
+	</select>
+
+	<select id="queryTerminalForRegional" resultMap="queryTerminalForPageMap"
+		parameterType="map">
+		SELECT
+			TER.TERMINAL_ID,
+			TER.TERMINAL_NAME,
+			TER.TERMINAL_TYPE,
+			TER.ERP_CODE,
+			TER.TERMINAL_ADDRESS,
+			TER.TERMINAL_STATUS,
+			TER.IS_DELETE,
+			TER.JOIN_DATE,
+			TER.PLAN_DATE,
+			TER.CREATE_DATE,
+			TER.PRODUCT_CATEGORY_IDS,
+			STA.STATION_ID,
+			STA.STATION_CODE,
+			STA.STATION_NAME,
+			STA.IS_DELETE AS STA_ISDELETE,
+			OFF.OFFICE_ID,
+			OFF.OFFICE_CODE,
+			OFF.OFFICE_NAME,
+			OFF.IS_DELETE AS OFF_ISDELETE, 
+			ZON.ZONE_ID,
+			ZON.ZONE_CODE,
+			ZON.ZONE_NAME,
+			ZON.IS_DELETE AS ZON_ISDELETE,
+			AGE.AGENT_ID,
+			AGE.AGENT_NAME,
+			AGE.ERP_CODE AS AGE_ERP_CODE,
+			AGE.IS_DELETE AS AGE_ISDELETE, 
+			CHN.CHANNEL_ID,
+			CHN.CHANNEL_NAME,
+			CHN.IS_DELETE AS CHN_ISDELETE, 
+			HIE.HIERARCHY_ID,
+			HIE.HIERARCHY_NAME,
+			HIE.HIERARCHY_NICK,
+			HIE.IS_DELETE AS HIE_ISDELETE, 
+			PRO.AreaCode AS TERMINAL_PROVINCE,
+			PRO.AreaName AS PROVINCE_NAME,
+			DIS.AreaCode AS TERMINAL_DISTRICT,
+			DIS.AreaName AS DISTRICT_NAME,
+			CIT.AreaCode AS TERMINAL_CITY,
+			CIT.AreaName AS CITY_NAME,
+			SUR.USER_ID,
+			SUR.USER_NAME,
+			SUR.IS_ACTIVE
+		FROM
+			user_terminal TER
+		LEFT JOIN user_agent AGE ON TER.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_channel CHN ON TER.CHANNEL_ID = CHN.CHANNEL_ID
+		LEFT JOIN system_station STA ON TER.STATION_CODE = STA.STATION_CODE AND STA.IS_DELETE=0
+		LEFT JOIN system_office OFF ON TER.OFFICE_CODE = OFF.OFFICE_CODE AND OFF.IS_DELETE=0
+		LEFT JOIN system_zone ZON ON TER.ZONE_CODE = ZON.ZONE_CODE AND ZON.IS_DELETE=0
+		LEFT JOIN system_hierarchy HIE ON TER.HIERARCHY_ID = HIE.HIERARCHY_ID
+		LEFT JOIN security_user_station SUS ON STA.STATION_CODE = SUS.STATION_CODE
+		LEFT JOIN security_user SUR ON SUS.USER_ID = SUR.USER_ID
+		AND SUR.USER_ID IS NOT NULL
+		LEFT JOIN system_area PRO ON TER.TERMINAL_PROVINCE = PRO.AreaCode
+		LEFT JOIN system_area DIS ON TER.TERMINAL_DISTRICT = DIS.AreaCode
+		LEFT JOIN system_area CIT ON TER.TERMINAL_CITY = CIT.AreaCode
+		<where>
+			TER.IS_DELETE = 0
+			<if test="zoneCode != null and zoneCode != ''">
+				AND ZON.ZONE_CODE = #{zoneCode,jdbcType=VARCHAR}
+			</if>
+			
+			<if test="queryTerminalCode!=null and queryTerminalCode!=''">
+				and TER.TERMINAL_ID like CONCAT('%',#{queryTerminalCode},'%')
+			</if>
+			<if test="queryTerminalName!=null and queryTerminalName!=''">
+				and TER.TERMINAL_NAME like CONCAT('%',#{queryTerminalName},'%')
+			</if>
+			<if test="queryAgent!=null and queryAgent!=''">
+				and SUR.USER_ID=#{queryAgent,jdbcType=VARCHAR}
+			</if>
+			<if test="queryTerminalStatus!=null and queryTerminalStatus!=''">
+				and TER.TERMINAL_STATUS=#{queryTerminalStatus,jdbcType=TINYINT}
+			</if>
+			<if test="queryTerminalType!=null and queryTerminalType!=''">
+				and TER.TERMINAL_TYPE=#{queryTerminalType,jdbcType=TINYINT}
+			</if>
+			<if test="queryChannelId!=null and queryChannelId!=''">
+				and TER.CHANNEL_ID=#{queryChannelId,jdbcType=VARCHAR}
+			</if>
+			<if test="queryHierarchyId!=null and queryHierarchyId!=''">
+				and TER.HIERARCHY_ID=#{queryHierarchyId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY TER.CREATE_DATE DESC
+	</select>
+
+	<select id="queryTerminalForOffice" resultMap="queryTerminalForPageMap"
+		parameterType="map">
+		SELECT
+			TER.TERMINAL_ID,
+			TER.TERMINAL_NAME,
+			TER.TERMINAL_TYPE,
+			TER.ERP_CODE,
+			TER.TERMINAL_ADDRESS,
+			TER.TERMINAL_STATUS,
+			TER.IS_DELETE,
+			TER.JOIN_DATE,
+			TER.PLAN_DATE,
+			TER.CREATE_DATE,
+			TER.PRODUCT_CATEGORY_IDS,
+			STA.STATION_ID,
+			STA.STATION_CODE,
+			STA.STATION_NAME,
+			STA.IS_DELETE AS STA_ISDELETE,
+			OFF.OFFICE_ID,
+			OFF.OFFICE_CODE,
+			OFF.OFFICE_NAME,
+			OFF.IS_DELETE AS OFF_ISDELETE, 
+			ZON.ZONE_ID,
+			ZON.ZONE_CODE,
+			ZON.ZONE_NAME,
+			ZON.IS_DELETE AS ZON_ISDELETE,
+			AGE.AGENT_ID,
+			AGE.AGENT_NAME,
+			AGE.ERP_CODE AS AGE_ERP_CODE,
+			AGE.IS_DELETE AS AGE_ISDELETE, 
+			CHN.CHANNEL_ID,
+			CHN.CHANNEL_NAME,
+			CHN.IS_DELETE AS CHN_ISDELETE, 
+			HIE.HIERARCHY_ID,
+			HIE.HIERARCHY_NAME,
+			HIE.HIERARCHY_NICK,
+			HIE.IS_DELETE AS HIE_ISDELETE, 
+			PRO.AreaCode AS TERMINAL_PROVINCE,
+			PRO.AreaName AS PROVINCE_NAME,
+			DIS.AreaCode AS TERMINAL_DISTRICT,
+			DIS.AreaName AS DISTRICT_NAME,
+			CIT.AreaCode AS TERMINAL_CITY,
+			CIT.AreaName AS CITY_NAME,
+			SUR.USER_ID,
+			SUR.USER_NAME,
+			SUR.IS_ACTIVE
+		FROM
+			user_terminal TER
+		LEFT JOIN user_agent AGE ON TER.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_channel CHN ON TER.CHANNEL_ID = CHN.CHANNEL_ID
+		LEFT JOIN system_station STA ON TER.STATION_CODE = STA.STATION_CODE AND STA.IS_DELETE=0
+		LEFT JOIN system_office OFF ON TER.OFFICE_CODE = OFF.OFFICE_CODE AND OFF.IS_DELETE=0
+		LEFT JOIN system_zone ZON ON TER.ZONE_CODE = ZON.ZONE_CODE AND ZON.IS_DELETE=0
+		LEFT JOIN system_hierarchy HIE ON TER.HIERARCHY_ID = HIE.HIERARCHY_ID
+		LEFT JOIN security_user_station SUS ON STA.STATION_CODE = SUS.STATION_CODE
+		LEFT JOIN security_user SUR ON SUS.USER_ID = SUR.USER_ID
+		AND SUR.USER_ID IS NOT NULL
+		LEFT JOIN system_area PRO ON TER.TERMINAL_PROVINCE = PRO.AreaCode
+		LEFT JOIN system_area DIS ON TER.TERMINAL_DISTRICT = DIS.AreaCode
+		LEFT JOIN system_area CIT ON TER.TERMINAL_CITY = CIT.AreaCode
+		<where>
+			TER.IS_DELETE = 0
+			<if test="officeCode != null and officeCode != ''">
+				 AND OFF.OFFICE_CODE = #{officeCode,jdbcType=VARCHAR}
+			</if>
+			<if test="queryTerminalCode!=null and queryTerminalCode!=''">
+				and TER.TERMINAL_ID like CONCAT('%',#{queryTerminalCode},'%')
+			</if>
+			<if test="queryTerminalName!=null and queryTerminalName!=''">
+				and TER.TERMINAL_NAME like CONCAT('%',#{queryTerminalName},'%')
+			</if>
+			<if test="queryAgent!=null and queryAgent!=''">
+				and SUR.USER_ID=#{queryAgent,jdbcType=VARCHAR}
+			</if>
+			<if test="queryTerminalStatus!=null and queryTerminalStatus!=''">
+				and TER.TERMINAL_STATUS=#{queryTerminalStatus,jdbcType=TINYINT}
+			</if>
+			<if test="queryTerminalType!=null and queryTerminalType!=''">
+				and TER.TERMINAL_TYPE=#{queryTerminalType,jdbcType=TINYINT}
+			</if>
+			<if test="queryChannelId!=null and queryChannelId!=''">
+				and TER.CHANNEL_ID=#{queryChannelId,jdbcType=VARCHAR}
+			</if>
+			<if test="queryHierarchyId!=null and queryHierarchyId!=''">
+				and TER.HIERARCHY_ID=#{queryHierarchyId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY TER.CREATE_DATE DESC
+	</select>
+	
+	
+	<select id="queryTerminalForSaleMan" resultMap="queryTerminalForPageMap"
+		parameterType="map">
+		SELECT
+			TER.TERMINAL_ID,
+			TER.TERMINAL_NAME,
+			TER.TERMINAL_TYPE,
+			TER.ERP_CODE,
+			TER.TERMINAL_ADDRESS,
+			TER.TERMINAL_STATUS,
+			TER.IS_DELETE,
+			TER.JOIN_DATE,
+			TER.PLAN_DATE,
+			TER.CREATE_DATE,
+			TER.PRODUCT_CATEGORY_IDS,
+			STA.STATION_ID,
+			STA.STATION_CODE,
+			STA.STATION_NAME,
+			STA.IS_DELETE AS STA_ISDELETE,
+			OFF.OFFICE_ID,
+			OFF.OFFICE_CODE,
+			OFF.OFFICE_NAME,
+			OFF.IS_DELETE AS OFF_ISDELETE, 
+			ZON.ZONE_ID,
+			ZON.ZONE_CODE,
+			ZON.ZONE_NAME,
+			ZON.IS_DELETE AS ZON_ISDELETE,
+			AGE.AGENT_ID,
+			AGE.AGENT_NAME,
+			AGE.ERP_CODE AS AGE_ERP_CODE,
+			AGE.IS_DELETE AS AGE_ISDELETE, 
+			CHN.CHANNEL_ID,
+			CHN.CHANNEL_NAME,
+			CHN.IS_DELETE AS CHN_ISDELETE, 
+			HIE.HIERARCHY_ID,
+			HIE.HIERARCHY_NAME,
+			HIE.HIERARCHY_NICK,
+			HIE.IS_DELETE AS HIE_ISDELETE, 
+			PRO.AreaCode AS TERMINAL_PROVINCE,
+			PRO.AreaName AS PROVINCE_NAME,
+			DIS.AreaCode AS TERMINAL_DISTRICT,
+			DIS.AreaName AS DISTRICT_NAME,
+			CIT.AreaCode AS TERMINAL_CITY,
+			CIT.AreaName AS CITY_NAME,
+			SUR.USER_ID,
+			SUR.USER_NAME,
+			SUR.IS_ACTIVE
+		FROM
+			user_terminal TER
+		LEFT JOIN user_agent AGE ON TER.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_channel CHN ON TER.CHANNEL_ID = CHN.CHANNEL_ID
+		LEFT JOIN system_station STA ON TER.STATION_CODE = STA.STATION_CODE AND STA.IS_DELETE=0
+		LEFT JOIN system_office OFF ON TER.OFFICE_CODE = OFF.OFFICE_CODE AND OFF.IS_DELETE=0
+		LEFT JOIN system_zone ZON ON TER.ZONE_CODE = ZON.ZONE_CODE AND ZON.IS_DELETE=0
+		LEFT JOIN system_hierarchy HIE ON TER.HIERARCHY_ID = HIE.HIERARCHY_ID
+		LEFT JOIN security_user_station SUS ON STA.STATION_CODE = SUS.STATION_CODE
+		LEFT JOIN security_user SUR ON SUS.USER_ID = SUR.USER_ID
+		AND SUR.USER_ID IS NOT NULL
+		LEFT JOIN system_area PRO ON TER.TERMINAL_PROVINCE = PRO.AreaCode
+		LEFT JOIN system_area DIS ON TER.TERMINAL_DISTRICT = DIS.AreaCode
+		LEFT JOIN system_area CIT ON TER.TERMINAL_CITY = CIT.AreaCode
+		<where>
+			TER.IS_DELETE = 0
+			<if test="userId != null and userId != ''">
+				AND SUR.USER_ID = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="queryTerminalCode!=null and queryTerminalCode!=''">
+				and TER.TERMINAL_ID like CONCAT('%',#{queryTerminalCode},'%')
+			</if>
+			<if test="queryTerminalName!=null and queryTerminalName!=''">
+				and TER.TERMINAL_NAME like CONCAT('%',#{queryTerminalName},'%')
+			</if>
+			<if test="queryAgent!=null and queryAgent!=''">
+				and SUR.USER_ID=#{queryAgent,jdbcType=VARCHAR}
+			</if>
+			<if test="queryTerminalStatus!=null and queryTerminalStatus!=''">
+				and TER.TERMINAL_STATUS=#{queryTerminalStatus,jdbcType=TINYINT}
+			</if>
+			<if test="queryTerminalType!=null and queryTerminalType!=''">
+				and TER.TERMINAL_TYPE=#{queryTerminalType,jdbcType=TINYINT}
+			</if>
+			<if test="queryChannelId!=null and queryChannelId!=''">
+				and TER.CHANNEL_ID=#{queryChannelId,jdbcType=VARCHAR}
+			</if>
+			<if test="queryHierarchyId!=null and queryHierarchyId!=''">
+				and TER.HIERARCHY_ID=#{queryHierarchyId,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY TER.CREATE_DATE DESC
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IHierarchyMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.system.Hierarchy" >
+    <id column="HIERARCHY_ID" property="hierarchyId" jdbcType="INTEGER" />
+    <result column="HIERARCHY_NAME" property="hierarchyName" jdbcType="VARCHAR" />
+    <result column="HIERARCHY_NICK" property="hierarchyNick" jdbcType="VARCHAR" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    HIERARCHY_ID, HIERARCHY_NAME, HIERARCHY_NICK, IS_DELETE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.system.HierarchyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from system_hierarchy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_hierarchy
+    where HIERARCHY_ID = #{hierarchyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_hierarchy
+    where HIERARCHY_ID = #{hierarchyId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.system.HierarchyExample" >
+    delete from system_hierarchy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.system.Hierarchy" >
+    insert into system_hierarchy (HIERARCHY_NAME, HIERARCHY_NICK, 
+      IS_DELETE)
+    values (#{hierarchyName,jdbcType=VARCHAR}, #{hierarchyNick,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.system.Hierarchy" >
+    insert into system_hierarchy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hierarchyName != null" >
+        HIERARCHY_NAME,
+      </if>
+      <if test="hierarchyNick != null" >
+        HIERARCHY_NICK,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hierarchyName != null" >
+        #{hierarchyName,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyNick != null" >
+        #{hierarchyNick,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.system.HierarchyExample" resultType="java.lang.Integer" >
+    select count(*) from system_hierarchy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_hierarchy
+    <set >
+      <if test="record.hierarchyId != null" >
+        HIERARCHY_ID = #{record.hierarchyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hierarchyName != null" >
+        HIERARCHY_NAME = #{record.hierarchyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hierarchyNick != null" >
+        HIERARCHY_NICK = #{record.hierarchyNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null" >
+        IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_hierarchy
+    set HIERARCHY_ID = #{record.hierarchyId,jdbcType=INTEGER},
+      HIERARCHY_NAME = #{record.hierarchyName,jdbcType=VARCHAR},
+      HIERARCHY_NICK = #{record.hierarchyNick,jdbcType=VARCHAR},
+      IS_DELETE = #{record.isDelete,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.system.Hierarchy" >
+    update system_hierarchy
+    <set >
+      <if test="hierarchyName != null" >
+        HIERARCHY_NAME = #{hierarchyName,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyNick != null" >
+        HIERARCHY_NICK = #{hierarchyNick,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where HIERARCHY_ID = #{hierarchyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.system.Hierarchy" >
+    update system_hierarchy
+    set HIERARCHY_NAME = #{hierarchyName,jdbcType=VARCHAR},
+      HIERARCHY_NICK = #{hierarchyNick,jdbcType=VARCHAR},
+      IS_DELETE = #{isDelete,jdbcType=TINYINT}
+    where HIERARCHY_ID = #{hierarchyId,jdbcType=INTEGER}
+  </update>
+  <select id="hierarchyListForPage" resultMap="BaseResultMap" parameterType="map">  
+    SELECT
+		hierarchy.HIERARCHY_ID,
+		hierarchy.HIERARCHY_NAME,
+		hierarchy.HIERARCHY_NICK,
+		hierarchy.IS_DELETE
+	FROM
+		system_hierarchy hierarchy
+	WHERE
+		hierarchy.IS_DELETE=0
+	<if test="hierarchyName != null and hierarchyName != ''">
+      	AND hierarchy.HIERARCHY_NAME like CONCAT('%',#{hierarchyName},'%')
+      </if> 
+  </select>
+  
+  <select id="queryHierarchyByName" resultMap="BaseResultMap" parameterType="map">
+      SELECT
+          hierarchy.HIERARCHY_ID,
+          hierarchy.HIERARCHY_NAME,
+          hierarchy.HIERARCHY_NICK,
+          hierarchy.IS_DELETE
+      FROM
+          system_hierarchy hierarchy
+      WHERE hierarchy.IS_DELETE=0
+      <if test="hierarchyName != null and hierarchyName != ''">
+      	AND hierarchy.HIERARCHY_NAME like CONCAT('%',#{hierarchyName},'%')
+      </if> 
+  </select> 
+</mapper>

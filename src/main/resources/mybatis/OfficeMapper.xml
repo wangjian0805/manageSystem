@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IOfficeMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.system.Office" >
+    <id column="OFFICE_ID" property="officeId" jdbcType="INTEGER" />
+    <result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+    <result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+    <result column="ZONE_CODE" property="zoneCode" jdbcType="VARCHAR" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap id="queryOfficeForPageMap" type="com.tasly.deepureflow.domain.system.Office">
+		<id column="OFFICE_ID" property="officeId" jdbcType="INTEGER" />
+		<result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+   		<result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+   		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="zone" javaType="com.tasly.deepureflow.domain.system.Zone">
+			<id column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+		    <result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    OFFICE_ID, OFFICE_CODE, OFFICE_NAME, ZONE_CODE, IS_DELETE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.system.OfficeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from system_office
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_office
+    where OFFICE_ID = #{officeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_office
+    where OFFICE_ID = #{officeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.system.OfficeExample" >
+    delete from system_office
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.system.Office" >
+    insert into system_office (OFFICE_ID, OFFICE_CODE, OFFICE_NAME, 
+      ZONE_CODE, IS_DELETE)
+    values (#{officeId,jdbcType=INTEGER}, #{officeCode,jdbcType=VARCHAR}, #{officeName,jdbcType=VARCHAR}, 
+      #{zoneCode,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.system.Office" >
+    insert into system_office
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="officeId != null" >
+        OFFICE_ID,
+      </if>
+      <if test="officeCode != null" >
+        OFFICE_CODE,
+      </if>
+      <if test="officeName != null" >
+        OFFICE_NAME,
+      </if>
+      <if test="zoneCode != null" >
+        ZONE_CODE,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="officeId != null" >
+        #{officeId,jdbcType=INTEGER},
+      </if>
+      <if test="officeCode != null" >
+        #{officeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="officeName != null" >
+        #{officeName,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneCode != null" >
+        #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.system.OfficeExample" resultType="java.lang.Integer" >
+    select count(*) from system_office
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_office
+    <set >
+      <if test="record.officeId != null" >
+        OFFICE_ID = #{record.officeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.officeCode != null" >
+        OFFICE_CODE = #{record.officeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.officeName != null" >
+        OFFICE_NAME = #{record.officeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zoneCode != null" >
+        ZONE_CODE = #{record.zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null" >
+        IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_office
+    set OFFICE_ID = #{record.officeId,jdbcType=INTEGER},
+      OFFICE_CODE = #{record.officeCode,jdbcType=VARCHAR},
+      OFFICE_NAME = #{record.officeName,jdbcType=VARCHAR},
+      ZONE_CODE = #{record.zoneCode,jdbcType=VARCHAR},
+      IS_DELETE = #{record.isDelete,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.system.Office" >
+    update system_office
+    <set >
+      <if test="officeCode != null" >
+        OFFICE_CODE = #{officeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="officeName != null" >
+        OFFICE_NAME = #{officeName,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneCode != null" >
+        ZONE_CODE = #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where OFFICE_ID = #{officeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.system.Office" >
+    update system_office
+    set OFFICE_CODE = #{officeCode,jdbcType=VARCHAR},
+      OFFICE_NAME = #{officeName,jdbcType=VARCHAR},
+      ZONE_CODE = #{zoneCode,jdbcType=VARCHAR},
+      IS_DELETE = #{isDelete,jdbcType=TINYINT}
+    where OFFICE_ID = #{officeId,jdbcType=INTEGER}
+  </update>
+  <select id="officeListForPage" resultMap="queryOfficeForPageMap" parameterType="map">  
+    SELECT
+		office.OFFICE_ID,
+		office.OFFICE_CODE,
+	    office.OFFICE_NAME,
+		office.IS_DELETE,
+		zone.ZONE_CODE,
+		zone.ZONE_NAME
+	FROM
+		system_office office
+	LEFT JOIN system_zone zone ON office.ZONE_CODE=zone.ZONE_CODE and zone.IS_DELETE=0
+	WHERE
+		office.IS_DELETE=0
+  </select>
+  
+  <select id="queryOfficeByUser" resultMap="BaseResultMap" parameterType="map">
+  	SELECT OFF.OFFICE_ID,OFF.OFFICE_CODE,OFF.OFFICE_NAME,OFF.IS_DELETE,OFF.ZONE_CODE 
+  	FROM system_office OFF
+	LEFT JOIN system_station STA ON STA.OFFICE_CODE=OFF.OFFICE_CODE AND STA.IS_DELETE = 0
+	LEFT JOIN security_user_station SUS ON SUS.STATION_CODE=STA.STATION_CODE
+	WHERE OFF.IS_DELETE=0 AND SUS.USER_ID=#{userId,jdbcType=VARCHAR}
+  </select>
+</mapper>

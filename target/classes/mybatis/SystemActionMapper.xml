@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.ISystemActionMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.system.SystemAction" >
+    <id column="ACTION_ID" property="actionId" jdbcType="INTEGER" />
+    <result column="ACTION_URL" property="actionUrl" jdbcType="VARCHAR" />
+    <result column="ACTION_TYPE" property="actionType" jdbcType="INTEGER" />
+    <result column="ACTION_OPERATION_TIME" property="actionOperationTime" jdbcType="TIMESTAMP" />
+    <result column="ACTION_OPERATION_NAME" property="actionOperationName" jdbcType="VARCHAR" />
+    <result column="ACTION_MESSAGE" property="actionMessage" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ACTION_ID, ACTION_URL, ACTION_TYPE, ACTION_OPERATION_TIME, ACTION_OPERATION_NAME, 
+    ACTION_MESSAGE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.system.SystemActionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from system_action
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_action
+    where ACTION_ID = #{actionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_action
+    where ACTION_ID = #{actionId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.system.SystemActionExample" >
+    delete from system_action
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.system.SystemAction" >
+    insert into system_action (ACTION_URL, ACTION_TYPE, 
+      ACTION_OPERATION_TIME, ACTION_OPERATION_NAME, 
+      ACTION_MESSAGE)
+    values (#{actionUrl,jdbcType=VARCHAR}, #{actionType,jdbcType=INTEGER}, 
+      #{actionOperationTime,jdbcType=TIMESTAMP}, #{actionOperationName,jdbcType=VARCHAR}, 
+      #{actionMessage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.system.SystemAction" >
+    insert into system_action
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actionUrl != null" >
+        ACTION_URL,
+      </if>
+      <if test="actionType != null" >
+        ACTION_TYPE,
+      </if>
+      <if test="actionOperationTime != null" >
+        ACTION_OPERATION_TIME,
+      </if>
+      <if test="actionOperationName != null" >
+        ACTION_OPERATION_NAME,
+      </if>
+      <if test="actionMessage != null" >
+        ACTION_MESSAGE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actionUrl != null" >
+        #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=INTEGER},
+      </if>
+      <if test="actionOperationTime != null" >
+        #{actionOperationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionOperationName != null" >
+        #{actionOperationName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionMessage != null" >
+        #{actionMessage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.system.SystemActionExample" resultType="java.lang.Integer" >
+    select count(*) from system_action
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_action
+    <set >
+      <if test="record.actionUrl != null" >
+        ACTION_URL = #{record.actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionType != null" >
+        ACTION_TYPE = #{record.actionType,jdbcType=INTEGER},
+      </if>
+      <if test="record.actionOperationTime != null" >
+        ACTION_OPERATION_TIME = #{record.actionOperationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.actionOperationName != null" >
+        ACTION_OPERATION_NAME = #{record.actionOperationName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionMessage != null" >
+        ACTION_MESSAGE = #{record.actionMessage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_action
+    set ACTION_URL = #{record.actionUrl,jdbcType=VARCHAR},
+      ACTION_TYPE = #{record.actionType,jdbcType=INTEGER},
+      ACTION_OPERATION_TIME = #{record.actionOperationTime,jdbcType=TIMESTAMP},
+      ACTION_OPERATION_NAME = #{record.actionOperationName,jdbcType=VARCHAR},
+      ACTION_MESSAGE = #{record.actionMessage,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.system.SystemAction" >
+    update system_action
+    <set >
+      <if test="actionUrl != null" >
+        ACTION_URL = #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        ACTION_TYPE = #{actionType,jdbcType=INTEGER},
+      </if>
+      <if test="actionOperationTime != null" >
+        ACTION_OPERATION_TIME = #{actionOperationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionOperationName != null" >
+        ACTION_OPERATION_NAME = #{actionOperationName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionMessage != null" >
+        ACTION_MESSAGE = #{actionMessage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ACTION_ID = #{actionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.system.SystemAction" >
+    update system_action
+    set ACTION_URL = #{actionUrl,jdbcType=VARCHAR},
+      ACTION_TYPE = #{actionType,jdbcType=INTEGER},
+      ACTION_OPERATION_TIME = #{actionOperationTime,jdbcType=TIMESTAMP},
+      ACTION_OPERATION_NAME = #{actionOperationName,jdbcType=VARCHAR},
+      ACTION_MESSAGE = #{actionMessage,jdbcType=VARCHAR}
+    where ACTION_ID = #{actionId,jdbcType=INTEGER}
+  </update>
+</mapper>

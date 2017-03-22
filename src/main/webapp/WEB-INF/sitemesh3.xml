@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+    <!-- Map default decorator. This shall be applied to all paths if no other paths match. -->
+    <mapping path="/*" decorator="/WEB-INF/jsp/common/main.jsp" exclude="false" />
+
+<!--     Exclude path from decoration. -->
+    <mapping path="/js/*" exclude="true" />
+    <mapping path="/img/*" exclude="true" />
+    <mapping path="/images/*" exclude="true" />
+    <mapping path="/css/*" exclude="true" />
+    <mapping path="/font-awesome/*" exclude="true" />
+    <mapping path="/login/*" exclude="true" />
+    <mapping path="/druid/*" exclude="true" />
+    <mapping path="/security*" exclude="true" />
+    <mapping path="/swagger/*" exclude="true" />
+    <mapping path="/ws" exclude="true" />
+</sitemesh>  

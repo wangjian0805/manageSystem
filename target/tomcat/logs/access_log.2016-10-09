@@ -1,0 +1,15 @@
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:11 +0800] "GET /deepureFlow/agent/agentFlowList HTTP/1.1" 302 - http-bio-8080-exec-1 177
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:12 +0800] "GET /deepureFlow/ HTTP/1.1" 302 - http-bio-8080-exec-2 45
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:12 +0800] "GET /deepureFlow/security HTTP/1.1" 200 2301 http-bio-8080-exec-3 624
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:12 +0800] "GET /deepureFlow/css/login.css HTTP/1.1" 304 - http-bio-8080-exec-4 20
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:12 +0800] "GET /deepureFlow/mydemo/getVerifyCodeImage HTTP/1.1" 404 360 http-bio-8080-exec-5 35
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:14 +0800] "GET /deepureFlow/security/getVerifyCodeImage HTTP/1.1" 200 1991 http-bio-8080-exec-7 1505
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:17 +0800] "POST /deepureFlow/security/login HTTP/1.1" 302 - http-bio-8080-exec-8 196
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:18 +0800] "GET /deepureFlow/user/getUserInfo HTTP/1.1" 200 30501 http-bio-8080-exec-9 775
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:18 +0800] "GET /deepureFlow/user/listUser?pageSize=1&pageNumber=10&queryUserId=&queryUserName= HTTP/1.1" 200 1732 http-bio-8080-exec-10 134
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:21 +0800] "GET /deepureFlow/agent/agentFlowList HTTP/1.1" 200 28687 http-bio-8080-exec-1 187
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:21 +0800] "GET /deepureFlow/agent/agentFlowPage?pageSize=1&pageNumber=10&planYear=&planMonth=&agentId=&createBy= HTTP/1.1" 200 34 http-bio-8080-exec-1 63
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:32 +0800] "GET /deepureFlow/terminal/planList HTTP/1.1" 200 35937 http-bio-8080-exec-1 275
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:33 +0800] "GET /deepureFlow/terminal/terminalSalePlanPage?pageSize=1&pageNumber=10&planYear=&agentId=-1&terminalId=&zoneId=-1&planMonth=&stationId=-1 HTTP/1.1" 200 4062 http-bio-8080-exec-4 70
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:55 +0800] "GET /deepureFlow/agent/agentFlowList HTTP/1.1" 200 28687 http-bio-8080-exec-4 22
+0:0:0:0:0:0:0:1 - - [09/Oct/2016:14:03:56 +0800] "GET /deepureFlow/agent/agentFlowPage?pageSize=1&pageNumber=10&planYear=&planMonth=&agentId=&createBy= HTTP/1.1" 200 34 http-bio-8080-exec-4 47

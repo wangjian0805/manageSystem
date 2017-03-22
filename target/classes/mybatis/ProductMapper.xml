@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IProductMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.product.Product" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PRODUCT_TYPE" property="productType" jdbcType="TINYINT" />
+    <result column="ACTIVATE_FLAG" property="activateFlag" jdbcType="TINYINT" />
+    <result column="ERP_UNIT_CODE" property="erpUnitCode" jdbcType="VARCHAR" />
+    <result column="ERP_UNIT" property="erpUnit" jdbcType="VARCHAR" />
+    <result column="ERP_MIN_UNIT_CODE" property="erpMinUnitCode" jdbcType="VARCHAR" />
+    <result column="ERP_MIN_UNIT" property="erpMinUnit" jdbcType="VARCHAR" />
+    <result column="CREATE_AT" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="CATEGORY_CODE" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="UNIT_QUANTITY" property="unitQuantity" jdbcType="INTEGER" />
+    <result column="UNIT_PRICE" property="unitPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="queryProductForPageMap" type="com.tasly.deepureflow.domain.product.Product">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="PRODUCT_TYPE" property="productType" jdbcType="TINYINT" />
+        <result column="ACTIVATE_FLAG" property="activateFlag"
+            jdbcType="TINYINT" />
+        <result column="ERP_UNIT_CODE" property="erpUnitCode" jdbcType="VARCHAR" />
+	    <result column="ERP_UNIT" property="erpUnit" jdbcType="VARCHAR" />
+	    <result column="ERP_MIN_UNIT_CODE" property="erpMinUnitCode" jdbcType="VARCHAR" />
+	    <result column="ERP_MIN_UNIT" property="erpMinUnit" jdbcType="VARCHAR" />
+        <result column="CREATE_AT" property="createAt" jdbcType="TIMESTAMP" />
+        <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+        <result column="CATEGORY_CODE" property="categoryCode"
+            jdbcType="VARCHAR" />
+        <result column="UNIT_QUANTITY" property="unitQuantity" jdbcType="INTEGER" />
+        <result column="UNIT_PRICE" property="unitPrice" jdbcType="DECIMAL" />
+        <association property="productCategory"
+            javaType="com.tasly.deepureflow.domain.product.ProductCategory">
+            <result column="CATEGORY_CODE" property="code" jdbcType="VARCHAR" />
+            <result column="CATEGORY_NAME" property="name" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, CODE, NAME, PRODUCT_TYPE, ACTIVATE_FLAG, ERP_UNIT_CODE, ERP_UNIT, ERP_MIN_UNIT_CODE, 
+    ERP_MIN_UNIT, CREATE_AT, CREATE_BY, CATEGORY_CODE, UNIT_QUANTITY, UNIT_PRICE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.product.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from product_sku
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from product_sku
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from product_sku
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.product.ProductExample" >
+    delete from product_sku
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.product.Product" >
+    insert into product_sku (ID, CODE, NAME, 
+      PRODUCT_TYPE, ACTIVATE_FLAG, ERP_UNIT_CODE, 
+      ERP_UNIT, ERP_MIN_UNIT_CODE, ERP_MIN_UNIT, 
+      CREATE_AT, CREATE_BY, CATEGORY_CODE, 
+      UNIT_QUANTITY, UNIT_PRICE)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{productType,jdbcType=TINYINT}, #{activateFlag,jdbcType=TINYINT}, #{erpUnitCode,jdbcType=VARCHAR}, 
+      #{erpUnit,jdbcType=VARCHAR}, #{erpMinUnitCode,jdbcType=VARCHAR}, #{erpMinUnit,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
+      #{unitQuantity,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.product.Product" >
+    insert into product_sku
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="productType != null" >
+        PRODUCT_TYPE,
+      </if>
+      <if test="activateFlag != null" >
+        ACTIVATE_FLAG,
+      </if>
+      <if test="erpUnitCode != null" >
+        ERP_UNIT_CODE,
+      </if>
+      <if test="erpUnit != null" >
+        ERP_UNIT,
+      </if>
+      <if test="erpMinUnitCode != null" >
+        ERP_MIN_UNIT_CODE,
+      </if>
+      <if test="erpMinUnit != null" >
+        ERP_MIN_UNIT,
+      </if>
+      <if test="createAt != null" >
+        CREATE_AT,
+      </if>
+      <if test="createBy != null" >
+        CREATE_BY,
+      </if>
+      <if test="categoryCode != null" >
+        CATEGORY_CODE,
+      </if>
+      <if test="unitQuantity != null" >
+        UNIT_QUANTITY,
+      </if>
+      <if test="unitPrice != null" >
+        UNIT_PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="activateFlag != null" >
+        #{activateFlag,jdbcType=TINYINT},
+      </if>
+      <if test="erpUnitCode != null" >
+        #{erpUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="erpUnit != null" >
+        #{erpUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="erpMinUnitCode != null" >
+        #{erpMinUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="erpMinUnit != null" >
+        #{erpMinUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="unitQuantity != null" >
+        #{unitQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.product.ProductExample" resultType="java.lang.Integer" >
+    select count(*) from product_sku
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update product_sku
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.code != null" >
+        CODE = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productType != null" >
+        PRODUCT_TYPE = #{record.productType,jdbcType=TINYINT},
+      </if>
+      <if test="record.activateFlag != null" >
+        ACTIVATE_FLAG = #{record.activateFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.erpUnitCode != null" >
+        ERP_UNIT_CODE = #{record.erpUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.erpUnit != null" >
+        ERP_UNIT = #{record.erpUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.erpMinUnitCode != null" >
+        ERP_MIN_UNIT_CODE = #{record.erpMinUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.erpMinUnit != null" >
+        ERP_MIN_UNIT = #{record.erpMinUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createAt != null" >
+        CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null" >
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryCode != null" >
+        CATEGORY_CODE = #{record.categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitQuantity != null" >
+        UNIT_QUANTITY = #{record.unitQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitPrice != null" >
+        UNIT_PRICE = #{record.unitPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update product_sku
+    set ID = #{record.id,jdbcType=INTEGER},
+      CODE = #{record.code,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      PRODUCT_TYPE = #{record.productType,jdbcType=TINYINT},
+      ACTIVATE_FLAG = #{record.activateFlag,jdbcType=TINYINT},
+      ERP_UNIT_CODE = #{record.erpUnitCode,jdbcType=VARCHAR},
+      ERP_UNIT = #{record.erpUnit,jdbcType=VARCHAR},
+      ERP_MIN_UNIT_CODE = #{record.erpMinUnitCode,jdbcType=VARCHAR},
+      ERP_MIN_UNIT = #{record.erpMinUnit,jdbcType=VARCHAR},
+      CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CATEGORY_CODE = #{record.categoryCode,jdbcType=VARCHAR},
+      UNIT_QUANTITY = #{record.unitQuantity,jdbcType=INTEGER},
+      UNIT_PRICE = #{record.unitPrice,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.product.Product" >
+    update product_sku
+    <set >
+      <if test="code != null" >
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        PRODUCT_TYPE = #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="activateFlag != null" >
+        ACTIVATE_FLAG = #{activateFlag,jdbcType=TINYINT},
+      </if>
+      <if test="erpUnitCode != null" >
+        ERP_UNIT_CODE = #{erpUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="erpUnit != null" >
+        ERP_UNIT = #{erpUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="erpMinUnitCode != null" >
+        ERP_MIN_UNIT_CODE = #{erpMinUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="erpMinUnit != null" >
+        ERP_MIN_UNIT = #{erpMinUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        CATEGORY_CODE = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="unitQuantity != null" >
+        UNIT_QUANTITY = #{unitQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="unitPrice != null" >
+        UNIT_PRICE = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.product.Product" >
+    update product_sku
+    set CODE = #{code,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      PRODUCT_TYPE = #{productType,jdbcType=TINYINT},
+      ACTIVATE_FLAG = #{activateFlag,jdbcType=TINYINT},
+      ERP_UNIT_CODE = #{erpUnitCode,jdbcType=VARCHAR},
+      ERP_UNIT = #{erpUnit,jdbcType=VARCHAR},
+      ERP_MIN_UNIT_CODE = #{erpMinUnitCode,jdbcType=VARCHAR},
+      ERP_MIN_UNIT = #{erpMinUnit,jdbcType=VARCHAR},
+      CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+      CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      CATEGORY_CODE = #{categoryCode,jdbcType=VARCHAR},
+      UNIT_QUANTITY = #{unitQuantity,jdbcType=INTEGER},
+      UNIT_PRICE = #{unitPrice,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="productListForPage" resultMap="queryProductForPageMap"
+        parameterType="map">
+        SELECT
+        product.ID,
+        product.`NAME`,
+        product.`CODE`,
+        product.ACTIVATE_FLAG,
+        product.CREATE_AT,
+        product.CREATE_BY,
+        product.ERP_MIN_UNIT_CODE,
+        product.ERP_MIN_UNIT,
+        product.ERP_UNIT_CODE,
+        product.ERP_UNIT,
+        product.PRODUCT_TYPE,
+        product.UNIT_QUANTITY,
+        product.UNIT_PRICE,
+        productCategory.`CODE` AS 'CATEGORY_CODE',
+        productCategory.`NAME` AS 'CATEGORY_NAME'
+        FROM product_sku product
+        LEFT JOIN product_category productCategory on
+        product.CATEGORY_CODE=productCategory.`CODE`
+        where product.ACTIVATE_FLAG = 1 
+		order by  productCategory.`CODE`,product.`CODE`
+    </select>
+</mapper>

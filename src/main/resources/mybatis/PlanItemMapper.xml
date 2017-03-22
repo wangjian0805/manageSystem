@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IPlanItemMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.deepureflow.PlanItem" >
+    <id column="SALE_PLAN_ITEM_ID" property="salePlanItemId" jdbcType="VARCHAR" />
+    <result column="SALE_PLAN_ID" property="salePlanId" jdbcType="VARCHAR" />
+    <result column="SKU_ID" property="skuId" jdbcType="VARCHAR" />
+    <result column="SKU_NAME" property="skuName" jdbcType="VARCHAR" />
+    <result column="BASE_QUANTITY" property="baseQuantity" jdbcType="INTEGER" />
+    <result column="BASE_UNIT_CODE" property="baseUnitCode" jdbcType="VARCHAR" />
+    <result column="BASE_UNIT" property="baseUnit" jdbcType="VARCHAR" />
+    <result column="BASE_PRICE" property="basePrice" jdbcType="DECIMAL" />
+    <result column="COUNT" property="count" jdbcType="INTEGER" />
+    <result column="MIN_UNIT_CODE" property="minUnitCode" jdbcType="VARCHAR" />
+    <result column="MIN_UNIT" property="minUnit" jdbcType="VARCHAR" />
+    <result column="TOTAL_PRICE" property="totalPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    SALE_PLAN_ITEM_ID, SALE_PLAN_ID, SKU_ID, SKU_NAME, BASE_QUANTITY, BASE_UNIT_CODE, 
+    BASE_UNIT, BASE_PRICE, COUNT, MIN_UNIT_CODE, MIN_UNIT, TOTAL_PRICE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.deepureflow.PlanItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from deepureflow_sale_plan_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from deepureflow_sale_plan_item
+    where SALE_PLAN_ITEM_ID = #{salePlanItemId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from deepureflow_sale_plan_item
+    where SALE_PLAN_ITEM_ID = #{salePlanItemId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.deepureflow.PlanItemExample" >
+    delete from deepureflow_sale_plan_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.deepureflow.PlanItem" >
+    insert into deepureflow_sale_plan_item (SALE_PLAN_ITEM_ID, SALE_PLAN_ID, SKU_ID, 
+      SKU_NAME, BASE_QUANTITY, BASE_UNIT_CODE, 
+      BASE_UNIT, BASE_PRICE, COUNT, 
+      MIN_UNIT_CODE, MIN_UNIT, TOTAL_PRICE
+      )
+    values (#{salePlanItemId,jdbcType=VARCHAR}, #{salePlanId,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, 
+      #{skuName,jdbcType=VARCHAR}, #{baseQuantity,jdbcType=INTEGER}, #{baseUnitCode,jdbcType=VARCHAR}, 
+      #{baseUnit,jdbcType=VARCHAR}, #{basePrice,jdbcType=DECIMAL}, #{count,jdbcType=INTEGER}, 
+      #{minUnitCode,jdbcType=VARCHAR}, #{minUnit,jdbcType=VARCHAR}, #{totalPrice,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.deepureflow.PlanItem" >
+    insert into deepureflow_sale_plan_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="salePlanItemId != null" >
+        SALE_PLAN_ITEM_ID,
+      </if>
+      <if test="salePlanId != null" >
+        SALE_PLAN_ID,
+      </if>
+      <if test="skuId != null" >
+        SKU_ID,
+      </if>
+      <if test="skuName != null" >
+        SKU_NAME,
+      </if>
+      <if test="baseQuantity != null" >
+        BASE_QUANTITY,
+      </if>
+      <if test="baseUnitCode != null" >
+        BASE_UNIT_CODE,
+      </if>
+      <if test="baseUnit != null" >
+        BASE_UNIT,
+      </if>
+      <if test="basePrice != null" >
+        BASE_PRICE,
+      </if>
+      <if test="count != null" >
+        COUNT,
+      </if>
+      <if test="minUnitCode != null" >
+        MIN_UNIT_CODE,
+      </if>
+      <if test="minUnit != null" >
+        MIN_UNIT,
+      </if>
+      <if test="totalPrice != null" >
+        TOTAL_PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="salePlanItemId != null" >
+        #{salePlanItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="salePlanId != null" >
+        #{salePlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null" >
+        #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null" >
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="baseQuantity != null" >
+        #{baseQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="baseUnitCode != null" >
+        #{baseUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="baseUnit != null" >
+        #{baseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="basePrice != null" >
+        #{basePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="minUnitCode != null" >
+        #{minUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnit != null" >
+        #{minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.deepureflow.PlanItemExample" resultType="java.lang.Integer" >
+    select count(*) from deepureflow_sale_plan_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update deepureflow_sale_plan_item
+    <set >
+      <if test="record.salePlanItemId != null" >
+        SALE_PLAN_ITEM_ID = #{record.salePlanItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salePlanId != null" >
+        SALE_PLAN_ID = #{record.salePlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuId != null" >
+        SKU_ID = #{record.skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuName != null" >
+        SKU_NAME = #{record.skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseQuantity != null" >
+        BASE_QUANTITY = #{record.baseQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.baseUnitCode != null" >
+        BASE_UNIT_CODE = #{record.baseUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseUnit != null" >
+        BASE_UNIT = #{record.baseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.basePrice != null" >
+        BASE_PRICE = #{record.basePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.count != null" >
+        COUNT = #{record.count,jdbcType=INTEGER},
+      </if>
+      <if test="record.minUnitCode != null" >
+        MIN_UNIT_CODE = #{record.minUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minUnit != null" >
+        MIN_UNIT = #{record.minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalPrice != null" >
+        TOTAL_PRICE = #{record.totalPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update deepureflow_sale_plan_item
+    set SALE_PLAN_ITEM_ID = #{record.salePlanItemId,jdbcType=VARCHAR},
+      SALE_PLAN_ID = #{record.salePlanId,jdbcType=VARCHAR},
+      SKU_ID = #{record.skuId,jdbcType=VARCHAR},
+      SKU_NAME = #{record.skuName,jdbcType=VARCHAR},
+      BASE_QUANTITY = #{record.baseQuantity,jdbcType=INTEGER},
+      BASE_UNIT_CODE = #{record.baseUnitCode,jdbcType=VARCHAR},
+      BASE_UNIT = #{record.baseUnit,jdbcType=VARCHAR},
+      BASE_PRICE = #{record.basePrice,jdbcType=DECIMAL},
+      COUNT = #{record.count,jdbcType=INTEGER},
+      MIN_UNIT_CODE = #{record.minUnitCode,jdbcType=VARCHAR},
+      MIN_UNIT = #{record.minUnit,jdbcType=VARCHAR},
+      TOTAL_PRICE = #{record.totalPrice,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.deepureflow.PlanItem" >
+    update deepureflow_sale_plan_item
+    <set >
+      <if test="salePlanId != null" >
+        SALE_PLAN_ID = #{salePlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null" >
+        SKU_ID = #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null" >
+        SKU_NAME = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="baseQuantity != null" >
+        BASE_QUANTITY = #{baseQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="baseUnitCode != null" >
+        BASE_UNIT_CODE = #{baseUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="baseUnit != null" >
+        BASE_UNIT = #{baseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="basePrice != null" >
+        BASE_PRICE = #{basePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="count != null" >
+        COUNT = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="minUnitCode != null" >
+        MIN_UNIT_CODE = #{minUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnit != null" >
+        MIN_UNIT = #{minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        TOTAL_PRICE = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where SALE_PLAN_ITEM_ID = #{salePlanItemId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.deepureflow.PlanItem" >
+    update deepureflow_sale_plan_item
+    set SALE_PLAN_ID = #{salePlanId,jdbcType=VARCHAR},
+      SKU_ID = #{skuId,jdbcType=VARCHAR},
+      SKU_NAME = #{skuName,jdbcType=VARCHAR},
+      BASE_QUANTITY = #{baseQuantity,jdbcType=INTEGER},
+      BASE_UNIT_CODE = #{baseUnitCode,jdbcType=VARCHAR},
+      BASE_UNIT = #{baseUnit,jdbcType=VARCHAR},
+      BASE_PRICE = #{basePrice,jdbcType=DECIMAL},
+      COUNT = #{count,jdbcType=INTEGER},
+      MIN_UNIT_CODE = #{minUnitCode,jdbcType=VARCHAR},
+      MIN_UNIT = #{minUnit,jdbcType=VARCHAR},
+      TOTAL_PRICE = #{totalPrice,jdbcType=DECIMAL}
+    where SALE_PLAN_ITEM_ID = #{salePlanItemId,jdbcType=VARCHAR}
+  </update>
+</mapper>

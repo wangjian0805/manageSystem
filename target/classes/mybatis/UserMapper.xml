@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IUserMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.user.User" >
+    <id column="USER_ID" property="id" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="username" jdbcType="VARCHAR" />
+    <result column="USER_PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isactive" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="queryUserForPageMap" type="com.tasly.deepureflow.domain.user.User">
+		<id column="USER_ID" property="id" jdbcType="INTEGER" />
+		<result column="USER_NAME" property="username" jdbcType="VARCHAR" />
+		<result column="USER_PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="IS_ACTIVE" property="isactive" jdbcType="BIT" />
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="role"
+			javaType="com.tasly.deepureflow.domain.security.Role">
+			<id column="ROLE_ID" property="id" />
+			<result column="CODE" property="code" />
+			<result column="TYPE" property="type" />
+			<result column="NAME" property="name" />
+		</association>
+
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="station"
+			javaType="com.tasly.deepureflow.domain.system.Station">
+			<result column="STATION_ID" property="stationId" jdbcType="INTEGER" />
+			<result column="STATION_CODE" property="stationCode" jdbcType="VARCHAR" />
+			<result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+		</association>
+
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="office"
+			javaType="com.tasly.deepureflow.domain.system.Office">
+			<result column="OFFICE_ID" property="officeId" jdbcType="INTEGER" />
+			<result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+			<result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+		</association>
+
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="zone"
+			javaType="com.tasly.deepureflow.domain.system.Zone">
+			<result column="ZONE_ID" property="zoneId" jdbcType="INTEGER" />
+			<result column="ZONE_CODE" property="zoneCode" jdbcType="VARCHAR" />
+			<result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    USER_ID, USER_NAME, USER_PASSWORD, IS_ACTIVE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.user.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from security_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from security_user
+    where USER_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from security_user
+    where USER_ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.user.UserExample" >
+    delete from security_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.user.User" >
+    insert into security_user (USER_ID, USER_NAME, USER_PASSWORD, 
+      IS_ACTIVE)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{isactive,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.user.User" >
+    insert into security_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        USER_ID,
+      </if>
+      <if test="username != null" >
+        USER_NAME,
+      </if>
+      <if test="password != null" >
+        USER_PASSWORD,
+      </if>
+      <if test="isactive != null" >
+        IS_ACTIVE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isactive != null" >
+        #{isactive,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.user.UserExample" resultType="java.lang.Integer" >
+    select count(*) from security_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update security_user
+    <set >
+      <if test="record.id != null" >
+        USER_ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        USER_NAME = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        USER_PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isactive != null" >
+        IS_ACTIVE = #{record.isactive,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update security_user
+    set USER_ID = #{record.id,jdbcType=VARCHAR},
+      USER_NAME = #{record.username,jdbcType=VARCHAR},
+      USER_PASSWORD = #{record.password,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isactive,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.user.User" >
+    update security_user
+    <set >
+      <if test="username != null" >
+        USER_NAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        USER_PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isactive != null" >
+        IS_ACTIVE = #{isactive,jdbcType=BIT},
+      </if>
+    </set>
+    where USER_ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.user.User" >
+    update security_user
+    set USER_NAME = #{username,jdbcType=VARCHAR},
+      USER_PASSWORD = #{password,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isactive,jdbcType=BIT}
+    where USER_ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="userListForPage" resultMap="queryUserForPageMap"
+		parameterType="map">
+		SELECT
+		USER .`USER_ID`,
+		USER .`USER_NAME`,
+		USER .`USER_PASSWORD`,
+		USER .`IS_ACTIVE`,
+		role.ID as 'ROLE_ID',
+		role.`CODE`,
+		role.TYPE,
+		role.VALID,
+		role.`NAME`,
+		station.STATION_ID,
+		station.STATION_CODE,
+		station.STATION_NAME,
+		office.OFFICE_ID,
+		office.OFFICE_CODE,
+		office.OFFICE_NAME,
+		zone.ZONE_ID,
+		zone.ZONE_CODE,
+		zone.ZONE_NAME
+		FROM
+		security_user USER
+		LEFT JOIN security_user_role ur ON ur.USER_ID = USER .USER_ID
+		LEFT JOIN security_role role ON ur.ROLE_ID = role.ID
+		LEFT JOIN
+		security_user_station sus on sus.USER_ID=USER.USER_ID
+		LEFT JOIN
+		system_station station on station.STATION_CODE=sus.STATION_CODE AND
+		station.IS_DELETE=0
+		LEFT JOIN system_office office on
+		station.OFFICE_CODE=office.OFFICE_CODE and office.IS_DELETE=0
+		LEFT JOIN
+		system_zone zone on zone.ZONE_CODE=office.ZONE_CODE and
+		zone.IS_DELETE=0
+		<where>
+		1 = 1
+		<if test="queryUserId != null and queryUserId != ''">
+      	AND USER.USER_ID LIKE CONCAT('%',#{queryUserId},'%')
+       </if>
+       <if test="queryUserName != null and queryUserName != ''">
+      	AND USER.USER_NAME LIKE CONCAT('%',#{queryUserName},'%')
+       </if>
+       </where>
+       order by CONVERT(USER .`USER_NAME` USING gbk)
+	</select>
+	<select id="queryUserByZoneCode" resultMap="queryUserForPageMap"
+		parameterType="map">
+		SELECT
+		USER .`USER_ID`,
+		USER .`USER_NAME`,
+		USER .`USER_PASSWORD`,
+		USER .`IS_ACTIVE`
+		
+		FROM
+		security_user USER
+		LEFT JOIN security_user_station SUS ON USER.USER_ID = SUS.USER_ID
+		LEFT JOIN system_station STA ON SUS.STATION_CODE = STA.STATION_CODE AND STA.IS_DELETE=0
+		LEFT JOIN system_office OFF on STA.OFFICE_CODE=OFF.OFFICE_CODE and OFF.IS_DELETE=0
+		LEFT JOIN system_zone ZON on ZON.ZONE_CODE=OFF.ZONE_CODE and ZON.IS_DELETE=0
+		<where>
+		1 = 1
+		<if test="zoneCode != null and zoneCode != ''">
+      	AND ZON.ZONE_CODE = #{zoneCode}
+       </if>
+       </where>
+	</select>
+	
+	<select id="queryUserByOfficeCode" resultMap="queryUserForPageMap"
+		parameterType="map">
+		SELECT
+		USER .`USER_ID`,
+		USER .`USER_NAME`,
+		USER .`USER_PASSWORD`,
+		USER .`IS_ACTIVE`
+		
+		FROM
+		security_user USER
+		LEFT JOIN security_user_station SUS ON USER.USER_ID = SUS.USER_ID
+		LEFT JOIN system_station STA ON SUS.STATION_CODE = STA.STATION_CODE AND STA.IS_DELETE=0
+		LEFT JOIN system_office OFF on STA.OFFICE_CODE=OFF.OFFICE_CODE and OFF.IS_DELETE=0
+		<where>
+		1 = 1
+		<if test="officeCode != null and officeCode != ''">
+      	AND OFF.OFFICE_CODE = #{officeCode}
+       </if>
+       </where>
+	</select>
+</mapper>

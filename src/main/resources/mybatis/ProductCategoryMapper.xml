@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IProductCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.product.ProductCategory" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="HSCODE" property="hscode" jdbcType="VARCHAR" />
+    <result column="LAYER" property="layer" jdbcType="TINYINT" />
+    <result column="ACTIVATE_FLAG" property="activateFlag" jdbcType="TINYINT" />
+    <result column="PARENT_ID" property="parentId" jdbcType="BIGINT" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CREATE_AT" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_AT" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="SYNC_FLAG" property="syncFlag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, NAME, CODE, HSCODE, LAYER, ACTIVATE_FLAG, PARENT_ID, DESCRIPTION, CREATE_AT, 
+    CREATE_BY, UPDATE_AT, SYNC_FLAG
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.product.ProductCategoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from product_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from product_category
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from product_category
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.product.ProductCategoryExample" >
+    delete from product_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.product.ProductCategory" >
+    insert into product_category (ID, NAME, CODE, 
+      HSCODE, LAYER, ACTIVATE_FLAG, 
+      PARENT_ID, DESCRIPTION, CREATE_AT, 
+      CREATE_BY, UPDATE_AT, SYNC_FLAG
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{hscode,jdbcType=VARCHAR}, #{layer,jdbcType=TINYINT}, #{activateFlag,jdbcType=TINYINT}, 
+      #{parentId,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP}, #{syncFlag,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.product.ProductCategory" >
+    insert into product_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="hscode != null" >
+        HSCODE,
+      </if>
+      <if test="layer != null" >
+        LAYER,
+      </if>
+      <if test="activateFlag != null" >
+        ACTIVATE_FLAG,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+      <if test="createAt != null" >
+        CREATE_AT,
+      </if>
+      <if test="createBy != null" >
+        CREATE_BY,
+      </if>
+      <if test="updateAt != null" >
+        UPDATE_AT,
+      </if>
+      <if test="syncFlag != null" >
+        SYNC_FLAG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="hscode != null" >
+        #{hscode,jdbcType=VARCHAR},
+      </if>
+      <if test="layer != null" >
+        #{layer,jdbcType=TINYINT},
+      </if>
+      <if test="activateFlag != null" >
+        #{activateFlag,jdbcType=TINYINT},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syncFlag != null" >
+        #{syncFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.product.ProductCategoryExample" resultType="java.lang.Integer" >
+    select count(*) from product_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update product_category
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null" >
+        CODE = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hscode != null" >
+        HSCODE = #{record.hscode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.layer != null" >
+        LAYER = #{record.layer,jdbcType=TINYINT},
+      </if>
+      <if test="record.activateFlag != null" >
+        ACTIVATE_FLAG = #{record.activateFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.parentId != null" >
+        PARENT_ID = #{record.parentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createAt != null" >
+        CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null" >
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateAt != null" >
+        UPDATE_AT = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.syncFlag != null" >
+        SYNC_FLAG = #{record.syncFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update product_category
+    set ID = #{record.id,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      CODE = #{record.code,jdbcType=VARCHAR},
+      HSCODE = #{record.hscode,jdbcType=VARCHAR},
+      LAYER = #{record.layer,jdbcType=TINYINT},
+      ACTIVATE_FLAG = #{record.activateFlag,jdbcType=TINYINT},
+      PARENT_ID = #{record.parentId,jdbcType=BIGINT},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      UPDATE_AT = #{record.updateAt,jdbcType=TIMESTAMP},
+      SYNC_FLAG = #{record.syncFlag,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.product.ProductCategory" >
+    update product_category
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="hscode != null" >
+        HSCODE = #{hscode,jdbcType=VARCHAR},
+      </if>
+      <if test="layer != null" >
+        LAYER = #{layer,jdbcType=TINYINT},
+      </if>
+      <if test="activateFlag != null" >
+        ACTIVATE_FLAG = #{activateFlag,jdbcType=TINYINT},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateAt != null" >
+        UPDATE_AT = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syncFlag != null" >
+        SYNC_FLAG = #{syncFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.product.ProductCategory" >
+    update product_category
+    set NAME = #{name,jdbcType=VARCHAR},
+      CODE = #{code,jdbcType=VARCHAR},
+      HSCODE = #{hscode,jdbcType=VARCHAR},
+      LAYER = #{layer,jdbcType=TINYINT},
+      ACTIVATE_FLAG = #{activateFlag,jdbcType=TINYINT},
+      PARENT_ID = #{parentId,jdbcType=BIGINT},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+      CREATE_BY = #{createBy,jdbcType=VARCHAR},
+      UPDATE_AT = #{updateAt,jdbcType=TIMESTAMP},
+      SYNC_FLAG = #{syncFlag,jdbcType=TINYINT}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="productCategoryListForPage" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		productCategory.*
+		FROM product_category productCategory
+	</select>
+	<!-- 通过code查询parentId -->
+	<select id="selectParentId" resultType="java.lang.String" parameterType="java.lang.String">
+	SELECT
+	PARENT_ID
+	
+	FROM product_category 
+	WHERE ACTIVATE_FLAG=0 AND
+	 CODE =#{code,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IAgentMapper">
+	<resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.user.Agent">
+		<id column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+		<result column="ERP_CODE" property="erpCode" jdbcType="VARCHAR" />
+		<result column="AGENT_NAME" property="agentName" jdbcType="VARCHAR" />
+		<result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+		<result column="AGENT_STATUS" property="agentStatus" jdbcType="VARCHAR" />
+		<result column="IS_VIRTUAL" property="isVirtual" jdbcType="TINYINT" />
+		<result column="PLAN_DATE" property="planDate" jdbcType="TIMESTAMP" />
+		<result column="JOIN_DATE" property="joinDate" jdbcType="TIMESTAMP" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+	</resultMap>
+	<resultMap id="queryAgentForPageMap" type="com.tasly.deepureflow.domain.user.Agent">
+		<id column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+		<result column="ERP_CODE" property="erpCode" jdbcType="VARCHAR" />
+		<result column="AGENT_NAME" property="agentName" jdbcType="VARCHAR" />
+		<result column="AGENT_STATUS" property="agentStatus" jdbcType="VARCHAR" />
+		<result column="IS_VIRTUAL" property="isVirtual" jdbcType="TINYINT" />
+		<result column="PLAN_DATE" property="planDate" jdbcType="TIMESTAMP" />
+		<result column="JOIN_DATE" property="joinDate" jdbcType="TIMESTAMP" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="hierarchy"
+			javaType="com.tasly.deepureflow.domain.system.Hierarchy">
+			<id column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+			<result column="HIERARCHY_NAME" property="hierarchyName"
+				jdbcType="VARCHAR" />
+			<result column="HIERARCHY_NICK" property="hierarchyNick"
+				jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		AGENT_ID, ERP_CODE, AGENT_NAME, HIERARCHY_ID, AGENT_STATUS,
+		IS_VIRTUAL,
+		PLAN_DATE,
+		JOIN_DATE, CREATE_DATE, IS_DELETE
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tasly.deepureflow.domain.user.AgentExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from user_agent
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from user_agent
+		where AGENT_ID = #{agentId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		user_agent
+		where AGENT_ID = #{agentId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.user.AgentExample">
+		delete from user_agent
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.tasly.deepureflow.domain.user.Agent">
+		insert into user_agent
+		(AGENT_ID, ERP_CODE, AGENT_NAME,
+		HIERARCHY_ID, AGENT_STATUS,
+		IS_VIRTUAL,
+		PLAN_DATE, JOIN_DATE, CREATE_DATE,
+		IS_DELETE)
+		values
+		(#{agentId,jdbcType=VARCHAR}, #{erpCode,jdbcType=VARCHAR},
+		#{agentName,jdbcType=VARCHAR},
+		#{hierarchyId,jdbcType=VARCHAR},
+		#{agentStatus,jdbcType=VARCHAR}, #{isVirtual,jdbcType=TINYINT},
+		#{planDate,jdbcType=TIMESTAMP}, #{joinDate,jdbcType=TIMESTAMP},
+		#{createDate,jdbcType=TIMESTAMP},
+		#{isDelete,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.user.Agent">
+		insert into user_agent
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="agentId != null">
+				AGENT_ID,
+			</if>
+			<if test="erpCode != null">
+				ERP_CODE,
+			</if>
+			<if test="agentName != null">
+				AGENT_NAME,
+			</if>
+			<if test="hierarchyId != null">
+				HIERARCHY_ID,
+			</if>
+			<if test="agentStatus != null">
+				AGENT_STATUS,
+			</if>
+			<if test="isVirtual != null">
+				IS_VIRTUAL,
+			</if>
+			<if test="planDate != null">
+				PLAN_DATE,
+			</if>
+			<if test="joinDate != null">
+				JOIN_DATE,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+			<if test="isDelete != null">
+				IS_DELETE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="agentId != null">
+				#{agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="erpCode != null">
+				#{erpCode,jdbcType=VARCHAR},
+			</if>
+			<if test="agentName != null">
+				#{agentName,jdbcType=VARCHAR},
+			</if>
+			<if test="hierarchyId != null">
+				#{hierarchyId,jdbcType=VARCHAR},
+			</if>
+			<if test="agentStatus != null">
+				#{agentStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="isVirtual != null">
+				#{isVirtual,jdbcType=TINYINT},
+			</if>
+			<if test="planDate != null">
+				#{planDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="joinDate != null">
+				#{joinDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.tasly.deepureflow.domain.user.AgentExample"
+		resultType="java.lang.Integer">
+		select count(*) from user_agent
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update user_agent
+		<set>
+			<if test="record.agentId != null">
+				AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.erpCode != null">
+				ERP_CODE = #{record.erpCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.agentName != null">
+				AGENT_NAME = #{record.agentName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.hierarchyId != null">
+				HIERARCHY_ID = #{record.hierarchyId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.agentStatus != null">
+				AGENT_STATUS = #{record.agentStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isVirtual != null">
+				IS_VIRTUAL = #{record.isVirtual,jdbcType=TINYINT},
+			</if>
+			<if test="record.planDate != null">
+				PLAN_DATE = #{record.planDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.joinDate != null">
+				JOIN_DATE = #{record.joinDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.createDate != null">
+				CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.isDelete != null">
+				IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update user_agent
+		set AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+		ERP_CODE = #{record.erpCode,jdbcType=VARCHAR},
+		AGENT_NAME =
+		#{record.agentName,jdbcType=VARCHAR},
+		HIERARCHY_ID =
+		#{record.hierarchyId,jdbcType=VARCHAR},
+		AGENT_STATUS =
+		#{record.agentStatus,jdbcType=VARCHAR},
+		IS_VIRTUAL =
+		#{record.isVirtual,jdbcType=TINYINT},
+		PLAN_DATE =
+		#{record.planDate,jdbcType=TIMESTAMP},
+		JOIN_DATE =
+		#{record.joinDate,jdbcType=TIMESTAMP},
+		CREATE_DATE =
+		#{record.createDate,jdbcType=TIMESTAMP},
+		IS_DELETE =
+		#{record.isDelete,jdbcType=TINYINT}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.user.Agent">
+		update user_agent
+		<set>
+			<if test="erpCode != null">
+				ERP_CODE = #{erpCode,jdbcType=VARCHAR},
+			</if>
+			<if test="agentName != null">
+				AGENT_NAME = #{agentName,jdbcType=VARCHAR},
+			</if>
+			<if test="hierarchyId != null">
+				HIERARCHY_ID = #{hierarchyId,jdbcType=VARCHAR},
+			</if>
+			<if test="agentStatus != null">
+				AGENT_STATUS = #{agentStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="isVirtual != null">
+				IS_VIRTUAL = #{isVirtual,jdbcType=TINYINT},
+			</if>
+			<if test="planDate != null">
+				PLAN_DATE = #{planDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="joinDate != null">
+				JOIN_DATE = #{joinDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDelete != null">
+				IS_DELETE = #{isDelete,jdbcType=TINYINT},
+			</if>
+		</set>
+		where AGENT_ID = #{agentId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.user.Agent">
+		update user_agent
+		set ERP_CODE = #{erpCode,jdbcType=VARCHAR},
+		AGENT_NAME =
+		#{agentName,jdbcType=VARCHAR},
+		HIERARCHY_ID =
+		#{hierarchyId,jdbcType=VARCHAR},
+		AGENT_STATUS =
+		#{agentStatus,jdbcType=VARCHAR},
+		IS_VIRTUAL =
+		#{isVirtual,jdbcType=TINYINT},
+		PLAN_DATE =
+		#{planDate,jdbcType=TIMESTAMP},
+		JOIN_DATE =
+		#{joinDate,jdbcType=TIMESTAMP},
+		CREATE_DATE =
+		#{createDate,jdbcType=TIMESTAMP},
+		IS_DELETE =
+		#{isDelete,jdbcType=TINYINT}
+		where AGENT_ID =
+		#{agentId,jdbcType=VARCHAR}
+	</update>
+	<select id="queryAllAgent" resultMap="queryAgentForPageMap"
+		parameterType="map">
+		SELECT
+		AGE.AGENT_ID,
+		AGE.AGENT_NAME,
+		AGE.AGENT_STATUS,
+		AGE.CREATE_DATE,
+		AGE.ERP_CODE,
+		AGE.IS_DELETE,
+		AGE.IS_VIRTUAL,
+		AGE.JOIN_DATE,
+		AGE.PLAN_DATE,
+		HIE.HIERARCHY_ID,
+		HIE.HIERARCHY_NAME
+		FROM
+		user_agent AGE
+		LEFT JOIN user_agent_terminal UAT ON UAT.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN user_terminal TER ON TER.TERMINAL_ID = UAT.TERMINAL_ID
+		LEFT
+		JOIN system_station STA ON STA.STATION_CODE = TER.STATION_CODE
+		LEFT
+		JOIN system_office OFF ON STA.OFFICE_CODE = OFF.OFFICE_CODE
+		LEFT JOIN
+		system_zone ZON ON OFF.ZONE_CODE = ZON.ZONE_CODE
+		LEFT JOIN
+		system_hierarchy HIE ON AGE.HIERARCHY_ID = HIE.HIERARCHY_ID
+		<where>
+			AGE.IS_DELETE=0
+			<if test="queryAgentId != null and queryAgentId!=''">
+				AND AGE.AGENT_ID LIKE CONCAT('%',#{queryAgentId},'%')
+			</if>
+			<if test="queryAgentTime != null and queryAgentTime!=''">
+				AND AGE.PLAN_DATE LIKE CONCAT('%',#{queryAgentTime},'%')
+			</if>
+			<if test="queryAgentName != null and queryAgentName!=''">
+				AND AGE.AGENT_NAME LIKE CONCAT('%',#{queryAgentName},'%')
+			</if>
+			<if test="queryAgentType != null and queryAgentType!=''">
+				AND AGE.AGENT_STATUS=#{queryAgentType,jdbcType=TINYINT}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryAgentForRegional" resultMap="queryAgentForPageMap"
+		parameterType="map">
+		SELECT
+		AGE.AGENT_ID,
+		AGE.AGENT_NAME,
+		AGE.AGENT_STATUS,
+		AGE.CREATE_DATE,
+		AGE.ERP_CODE,
+		AGE.IS_DELETE,
+		AGE.IS_VIRTUAL,
+		AGE.JOIN_DATE,
+		AGE.PLAN_DATE,
+		HIE.HIERARCHY_ID,
+		HIE.HIERARCHY_NAME
+		FROM
+		user_agent AGE
+		LEFT JOIN user_agent_terminal UAT ON UAT.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN user_terminal TER ON TER.TERMINAL_ID = UAT.TERMINAL_ID
+		LEFT
+		JOIN system_station STA ON STA.STATION_CODE = TER.STATION_CODE
+		LEFT
+		JOIN system_office OFF ON STA.OFFICE_CODE = OFF.OFFICE_CODE
+		LEFT JOIN
+		system_zone ZON ON OFF.ZONE_CODE = ZON.ZONE_CODE
+		LEFT JOIN
+		system_hierarchy HIE ON AGE.HIERARCHY_ID = HIE.HIERARCHY_ID
+		<where>
+			AGE.IS_DELETE=0
+			<if test="zoneCode != null and zoneCode != ''">
+				ZON.ZONE_CODE = #{zoneCode,jdbcType=VARCHAR}
+			</if>
+
+			<if test="queryAgentId != null and queryAgentId!=''">
+				AND AGE.AGENT_ID LIKE CONCAT('%',#{queryAgentId},'%')
+			</if>
+			<if test="queryAgentTime != null and queryAgentTime!=''">
+				AND AGE.PLAN_DATE LIKE CONCAT('%',#{queryAgentTime},'%')
+			</if>
+			<if test="queryAgentName != null and queryAgentName!=''">
+				AND AGE.AGENT_NAME LIKE CONCAT('%',#{queryAgentName},'%')
+			</if>
+			<if test="queryAgentType != null and queryAgentType!=''">
+				AND AGE.AGENT_STATUS=#{queryAgentType,jdbcType=TINYINT}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryAgentForOffice" resultMap="queryAgentForPageMap"
+		parameterType="map">
+		SELECT
+		AGE.AGENT_ID,
+		AGE.AGENT_NAME,
+		AGE.AGENT_STATUS,
+		AGE.CREATE_DATE,
+		AGE.ERP_CODE,
+		AGE.IS_DELETE,
+		AGE.IS_VIRTUAL,
+		AGE.JOIN_DATE,
+		AGE.PLAN_DATE,
+		HIE.HIERARCHY_ID,
+		HIE.HIERARCHY_NAME
+		FROM
+		user_agent AGE
+		LEFT JOIN user_agent_terminal UAT ON UAT.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN user_terminal TER ON TER.TERMINAL_ID = UAT.TERMINAL_ID
+		LEFT
+		JOIN system_station STA ON STA.STATION_CODE = TER.STATION_CODE
+		LEFT
+		JOIN system_office OFF ON STA.OFFICE_CODE = OFF.OFFICE_CODE
+		LEFT JOIN
+		system_zone ZON ON OFF.ZONE_CODE = ZON.ZONE_CODE
+		LEFT JOIN
+		system_hierarchy HIE ON AGE.HIERARCHY_ID = HIE.HIERARCHY_ID
+		<where>
+			AGE.IS_DELETE=0
+			<if test="officeCode != null and officeCode != ''">
+				OFF.OFFICE_CODE = #{officeCode,jdbcType=VARCHAR}
+			</if>
+			<if test="queryAgentId != null and queryAgentId!=''">
+				AND AGE.AGENT_ID LIKE CONCAT('%',#{queryAgentId},'%')
+			</if>
+			 <if test="queryAgentTime!=null and queryAgentTime!=''">
+<![CDATA[
+      and DATE_FORMAT(AGE.PLAN_DATE, '%Y-%m-%d') >=  DATE_FORMAT(#{queryAgentTime}, '%Y-%m-%d')
+]]>
+</if>
+<if test="queryAgentEndTime!=null and queryAgentEndTime!=''">
+<![CDATA[
+      and DATE_FORMAT(AGE.PLAN_DATE, '%Y-%m-%d') <=  DATE_FORMAT(#{queryAgentEndTime}, '%Y-%m-%d')
+]]>
+</if>
+			<if test="queryAgentName != null and queryAgentName!=''">
+				AND AGE.AGENT_NAME LIKE CONCAT('%',#{queryAgentName},'%')
+			</if>
+			<if test="queryAgentType != null and queryAgentType!=''">
+				AND AGE.AGENT_STATUS=#{queryAgentType,jdbcType=TINYINT}
+			</if>
+		</where>
+	</select>
+</mapper>

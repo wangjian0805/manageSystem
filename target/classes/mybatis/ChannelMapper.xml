@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.system.Channel" >
+    <id column="CHANNEL_ID" property="channelId" jdbcType="INTEGER" />
+    <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+    <result column="HIERARCHY_ID" property="hierarchyId" jdbcType="INTEGER" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+    <resultMap id="queryChannelForPageMap" type="com.tasly.deepureflow.domain.system.Channel">
+		<id column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+   		 <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="hierarchy" javaType="com.tasly.deepureflow.domain.system.Hierarchy">
+			<id column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+		    <result column="HIERARCHY_NAME" property="hierarchyName" jdbcType="VARCHAR" />
+		    <result column="HIERARCHY_NICK" property="hierarchyNick" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    CHANNEL_ID, CHANNEL_NAME, HIERARCHY_ID, IS_DELETE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.system.ChannelExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from system_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_channel
+    where CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_channel
+    where CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.system.ChannelExample" >
+    delete from system_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.system.Channel" >
+    insert into system_channel (CHANNEL_NAME, HIERARCHY_ID, 
+      IS_DELETE)
+    values (#{channelName,jdbcType=VARCHAR}, #{hierarchyId,jdbcType=INTEGER}, 
+      #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.system.Channel" >
+    insert into system_channel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="channelName != null" >
+        CHANNEL_NAME,
+      </if>
+      <if test="hierarchyId != null" >
+        HIERARCHY_ID,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="channelName != null" >
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyId != null" >
+        #{hierarchyId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.system.ChannelExample" resultType="java.lang.Integer" >
+    select count(*) from system_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update system_channel
+    <set >
+      <if test="record.channelId != null" >
+        CHANNEL_ID = #{record.channelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.channelName != null" >
+        CHANNEL_NAME = #{record.channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hierarchyId != null" >
+        HIERARCHY_ID = #{record.hierarchyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null" >
+        IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update system_channel
+    set CHANNEL_ID = #{record.channelId,jdbcType=INTEGER},
+      CHANNEL_NAME = #{record.channelName,jdbcType=VARCHAR},
+      HIERARCHY_ID = #{record.hierarchyId,jdbcType=INTEGER},
+      IS_DELETE = #{record.isDelete,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.system.Channel" >
+    update system_channel
+    <set >
+      <if test="channelName != null" >
+        CHANNEL_NAME = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyId != null" >
+        HIERARCHY_ID = #{hierarchyId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.system.Channel" >
+    update system_channel
+    set CHANNEL_NAME = #{channelName,jdbcType=VARCHAR},
+      HIERARCHY_ID = #{hierarchyId,jdbcType=INTEGER},
+      IS_DELETE = #{isDelete,jdbcType=TINYINT}
+    where CHANNEL_ID = #{channelId,jdbcType=INTEGER}
+  </update>
+  
+    <select id="channelListForPage" resultMap="queryChannelForPageMap" parameterType="map">  
+    SELECT
+		channel.CHANNEL_ID,
+		channel.CHANNEL_NAME,
+		channel.IS_DELETE,
+		hierarchy.HIERARCHY_ID,
+		hierarchy.HIERARCHY_NAME,
+		hierarchy.HIERARCHY_NICK
+	FROM
+		system_channel channel
+	LEFT JOIN system_hierarchy hierarchy ON channel.HIERARCHY_ID = hierarchy.HIERARCHY_ID and hierarchy.IS_DELETE=0
+	WHERE
+		channel.IS_DELETE=0
+  </select>
+  <select id="queryChannelByName" resultMap="queryChannelForPageMap" parameterType="map">  
+    SELECT
+		channel.CHANNEL_ID,
+		channel.CHANNEL_NAME,
+		channel.IS_DELETE,
+		hierarchy.HIERARCHY_ID,
+		hierarchy.HIERARCHY_NAME,
+		hierarchy.HIERARCHY_NICK
+		
+	FROM  system_channel channel
+		LEFT JOIN system_hierarchy hierarchy ON channel.HIERARCHY_ID = hierarchy.HIERARCHY_ID AND hierarchy.IS_DELETE=0
+	<where>
+	  channel.IS_DELETE=0
+      <if test="channelName != null and channelName != ''">
+      	AND channel.CHANNEL_NAME LIKE CONCAT('%',#{channelName},'%')
+      </if>
+     </where>
+  </select>
+   
+</mapper>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IZoneMapper">
+	<resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.system.Zone">
+		<id column="ZONE_ID" property="zoneId" jdbcType="INTEGER" />
+		<result column="ZONE_CODE" property="zoneCode" jdbcType="VARCHAR" />
+		<result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+		<result column="ZONE_PLAN_STATUS" property="zonePlanStatus"
+			jdbcType="TINYINT" />
+		<result column="ZONE_FLOW_STATUS" property="zoneFlowStatus"
+			jdbcType="TINYINT" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+	</resultMap>
+
+	<resultMap id="ZonePlanMap" type="com.tasly.deepureflow.domain.system.Zone">
+		<id column="ZONE_ID" property="zoneId" jdbcType="INTEGER" />
+		<result column="ZONE_CODE" property="zoneCode" jdbcType="VARCHAR" />
+		<result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+		<result column="ZONE_PLAN_STATUS" property="zonePlanStatus"
+			jdbcType="TINYINT" />
+		<result column="ZONE_FLOW_STATUS" property="zoneFlowStatus"
+			jdbcType="TINYINT" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+		<collection property="zonePlanList"
+			ofType="com.tasly.deepureflow.domain.system.ZonePlan">
+			<result column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+			<result column="PLAN_TYPE" property="planType" jdbcType="TINYINT" />
+			<result column="PLAN_START_DAY" property="planStartDay"
+				jdbcType="INTEGER" />
+			<result column="PLAN_END_DAY" property="planEndDay" jdbcType="INTEGER" />
+			<result column="PLAN_STATUS" property="planStatus" jdbcType="TINYINT" />
+		</collection>
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		ZONE_ID, ZONE_CODE, ZONE_NAME, ZONE_PLAN_STATUS, ZONE_FLOW_STATUS, IS_DELETE
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tasly.deepureflow.domain.system.ZoneExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from system_zone
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from system_zone
+		where ZONE_ID = #{zoneId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from system_zone
+		where ZONE_ID = #{zoneId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.system.ZoneExample">
+		delete from system_zone
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.tasly.deepureflow.domain.system.Zone">
+		insert into system_zone (ZONE_ID, ZONE_CODE, ZONE_NAME,
+		ZONE_PLAN_STATUS, ZONE_FLOW_STATUS, IS_DELETE
+		)
+		values (#{zoneId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR},
+		#{zoneName,jdbcType=VARCHAR},
+		#{zonePlanStatus,jdbcType=TINYINT}, #{zoneFlowStatus,jdbcType=TINYINT}, #{isDelete,jdbcType=TINYINT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.system.Zone">
+		insert into system_zone
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="zoneId != null">
+				ZONE_ID,
+			</if>
+			<if test="zoneCode != null">
+				ZONE_CODE,
+			</if>
+			<if test="zoneName != null">
+				ZONE_NAME,
+			</if>
+			<if test="zonePlanStatus != null">
+				ZONE_PLAN_STATUS,
+			</if>
+			<if test="zoneFlowStatus != null">
+				ZONE_FLOW_STATUS,
+			</if>
+			<if test="isDelete != null">
+				IS_DELETE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="zoneId != null">
+				#{zoneId,jdbcType=INTEGER},
+			</if>
+			<if test="zoneCode != null">
+				#{zoneCode,jdbcType=VARCHAR},
+			</if>
+			<if test="zoneName != null">
+				#{zoneName,jdbcType=VARCHAR},
+			</if>
+			<if test="zonePlanStatus != null">
+				#{zonePlanStatus,jdbcType=TINYINT},
+			</if>
+			<if test="zoneFlowStatus != null">
+				#{zoneFlowStatus,jdbcType=TINYINT},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.tasly.deepureflow.domain.system.ZoneExample"
+		resultType="java.lang.Integer">
+		select count(*) from system_zone
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update system_zone
+		<set>
+			<if test="record.zoneId != null">
+				ZONE_ID = #{record.zoneId,jdbcType=INTEGER},
+			</if>
+			<if test="record.zoneCode != null">
+				ZONE_CODE = #{record.zoneCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.zoneName != null">
+				ZONE_NAME = #{record.zoneName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.zonePlanStatus != null">
+				ZONE_PLAN_STATUS = #{record.zonePlanStatus,jdbcType=TINYINT},
+			</if>
+			<if test="record.zoneFlowStatus != null">
+				ZONE_FLOW_STATUS = #{record.zoneFlowStatus,jdbcType=TINYINT},
+			</if>
+			<if test="record.isDelete != null">
+				IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update system_zone
+		set ZONE_ID = #{record.zoneId,jdbcType=INTEGER},
+		ZONE_CODE = #{record.zoneCode,jdbcType=VARCHAR},
+		ZONE_NAME = #{record.zoneName,jdbcType=VARCHAR},
+		ZONE_PLAN_STATUS = #{record.zonePlanStatus,jdbcType=TINYINT},
+		ZONE_FLOW_STATUS = #{record.zoneFlowStatus,jdbcType=TINYINT},
+		IS_DELETE = #{record.isDelete,jdbcType=TINYINT}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.system.Zone">
+		update system_zone
+		<set>
+			<if test="zoneCode != null">
+				ZONE_CODE = #{zoneCode,jdbcType=VARCHAR},
+			</if>
+			<if test="zoneName != null">
+				ZONE_NAME = #{zoneName,jdbcType=VARCHAR},
+			</if>
+			<if test="zonePlanStatus != null">
+				ZONE_PLAN_STATUS = #{zonePlanStatus,jdbcType=TINYINT},
+			</if>
+			<if test="zoneFlowStatus != null">
+				ZONE_FLOW_STATUS = #{zoneFlowStatus,jdbcType=TINYINT},
+			</if>
+			<if test="isDelete != null">
+				IS_DELETE = #{isDelete,jdbcType=TINYINT},
+			</if>
+		</set>
+		where ZONE_ID = #{zoneId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.system.Zone">
+		update system_zone
+		set ZONE_CODE = #{zoneCode,jdbcType=VARCHAR},
+		ZONE_NAME = #{zoneName,jdbcType=VARCHAR},
+		ZONE_PLAN_STATUS = #{zonePlanStatus,jdbcType=TINYINT},
+		ZONE_FLOW_STATUS = #{zoneFlowStatus,jdbcType=TINYINT},
+		IS_DELETE = #{isDelete,jdbcType=TINYINT}
+		where ZONE_ID = #{zoneId,jdbcType=INTEGER}
+	</update>
+
+	<select id="zoneListForPage" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		ZONE.ZONE_ID,ZONE.ZONE_CODE,ZONE.ZONE_NAME,ZONE.ZONE_FLOW_STATUS,ZONE.ZONE_PLAN_STATUS,ZONE.IS_DELETE
+		FROM SYSTEM_ZONE ZONE
+		WHERE ZONE.IS_DELETE=0
+		<if test="zoneId != null and zoneId != ''">
+			AND ZONE.ZONE_ID = #{zoneId}
+		</if>
+
+		<if test="zoneFunction !=null and zoneFunction !=''">
+			<choose>
+				<when test="zoneFunction==1">
+					and ZONE.ZONE_FLOW_STATUS=1
+				</when>
+				<when test="zoneFunction==2">
+					and ZONE.ZONE_PLAN_STATUS=1
+				</when>
+				<when test="zoneFunction==3">
+					and ZONE.ZONE_FLOW_STATUS=1 and ZONE.ZONE_PLAN_STATUS=1
+				</when>
+			</choose>
+		</if>
+
+	</select>
+
+	<select id="queryZoneByCondition" resultMap="ZonePlanMap"
+		parameterType="map">
+		SELECT
+		ZONE.ZONE_ID,
+		ZONE.ZONE_CODE,
+		ZONE.ZONE_NAME,
+		ZONE.ZONE_FLOW_STATUS,
+		ZONE.ZONE_PLAN_STATUS,
+		ZONE.IS_DELETE,
+		ZP.PLAN_TYPE,
+		ZP.PLAN_STATUS,
+		ZP.PLAN_START_DAY,
+		ZP.PLAN_END_DAY
+		FROM
+		SYSTEM_ZONE ZONE
+		JOIN system_zone_plan ZP ON ZONE.ZONE_ID = ZP.ZONE_ID
+		WHERE
+		ZONE.IS_DELETE=0
+	</select>
+
+	<select id="queryZoneByUser" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT ZON.ZONE_ID,ZON.ZONE_CODE,ZON.ZONE_FLOW_STATUS,
+			ZON.ZONE_PLAN_STATUS,ZON.ZONE_NAME,ZON.IS_DELETE FROM
+		system_zone ZON
+		LEFT JOIN system_office OFF ON
+		OFF.ZONE_CODE=ZON.ZONE_CODE AND OFF.IS_DELETE = 0
+		LEFT JOIN
+		system_station STA ON STA.OFFICE_CODE=OFF.OFFICE_CODE AND
+		STA.IS_DELETE = 0
+		LEFT JOIN security_user_station SUS ON
+		SUS.STATION_CODE=STA.STATION_CODE
+		WHERE ZON.IS_DELETE=0 AND
+		SUS.USER_ID=#{userId,jdbcType=VARCHAR}
+	</select>
+</mapper>

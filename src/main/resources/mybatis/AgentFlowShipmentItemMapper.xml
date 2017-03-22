@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IAgentFlowShipmentItemMapper" >
+  <resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItem" >
+    <id column="AGENT_FLOW_SHIPMENT_ITEM_ID" property="agentFlowShipmentItemId" jdbcType="VARCHAR" />
+    <result column="AGENT_FLOW_ID" property="agentFlowId" jdbcType="VARCHAR" />
+    <result column="SKU_ID" property="skuId" jdbcType="VARCHAR" />
+    <result column="SKU_NAME" property="skuName" jdbcType="VARCHAR" />
+    <result column="SHIPMENT_QUANTITY" property="shipmentQuantity" jdbcType="INTEGER" />
+    <result column="SHIPMENT_MIN_QUANTITY" property="shipmentMinQuantity" jdbcType="INTEGER" />
+    <result column="BASE_UNIT_CODE" property="baseUnitCode" jdbcType="VARCHAR" />
+    <result column="BASE_UNIT" property="baseUnit" jdbcType="VARCHAR" />
+    <result column="MIN_UNIT_CODE" property="minUnitCode" jdbcType="VARCHAR" />
+    <result column="MIN_UNIT" property="minUnit" jdbcType="VARCHAR" />
+    <result column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+    <result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+    <result column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="OFFICE_ID" property="officeId" jdbcType="VARCHAR" />
+    <result column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ItemBaseMap"
+        type="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItem">
+        <id column="AGENT_FLOW_SHIPMENT_ITEM_ID" property="agentFlowShipmentItemId"
+            jdbcType="VARCHAR" />
+        <result column="AGENT_FLOW_ID" property="agentFlowId" jdbcType="VARCHAR" />
+        <result column="SKU_ID" property="skuId" jdbcType="VARCHAR" />
+        <result column="SKU_NAME" property="skuName" jdbcType="VARCHAR" />
+        <result column="SHIPMENT_QUANTITY" property="shipmentQuantity"
+            jdbcType="INTEGER" />
+        <result column="SHIPMENT_MIN_QUANTITY" property="shipmentMinQuantity"
+            jdbcType="INTEGER" />
+        <result column="BASE_UNIT_CODE" property="baseUnitCode" jdbcType="VARCHAR" />
+	    <result column="BASE_UNIT" property="baseUnit" jdbcType="VARCHAR" />
+	    <result column="MIN_UNIT_CODE" property="minUnitCode" jdbcType="VARCHAR" />
+	    <result column="MIN_UNIT" property="minUnit" jdbcType="VARCHAR" />
+        <result column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+        <result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+        <result column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+        <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+        <result column="OFFICE_ID" property="officeId" jdbcType="VARCHAR" />
+        <result column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+        <association property="terminal"
+            javaType="com.tasly.deepureflow.domain.user.Terminal">
+            <id column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+            <result column="TERMINAL_NAME" property="terminalName"
+                jdbcType="VARCHAR" />
+            <result column="ERP_CODE" property="erpCode"
+                jdbcType="VARCHAR" />
+        </association>
+        <association property="hierarchy"
+            javaType="com.tasly.deepureflow.domain.system.Hierarchy">
+            <id column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+            <result column="HIERARCHY_NAME" property="hierarchyName"
+                jdbcType="VARCHAR" />
+            <result column="HIERARCHY_NICK" property="hierarchyNick"
+                jdbcType="VARCHAR" />
+        </association>
+        <association property="channel"
+            javaType="com.tasly.deepureflow.domain.system.Channel">
+            <id column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+            <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+            <result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+        </association>
+        <association property="station"
+            javaType="com.tasly.deepureflow.domain.system.Station">
+            <id column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+            <result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+        </association>
+
+        <association property="office"
+            javaType="com.tasly.deepureflow.domain.system.Office">
+            <id column="OFFICE_ID" property="officeId" jdbcType="VARCHAR" />
+            <result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+        </association>
+
+        <association property="zone"
+            javaType="com.tasly.deepureflow.domain.system.Zone">
+            <id column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+            <result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    AGENT_FLOW_SHIPMENT_ITEM_ID, AGENT_FLOW_ID, SKU_ID, SKU_NAME, SHIPMENT_QUANTITY, 
+    SHIPMENT_MIN_QUANTITY, BASE_UNIT_CODE, BASE_UNIT, MIN_UNIT_CODE, MIN_UNIT, TERMINAL_ID, 
+    HIERARCHY_ID, CHANNEL_ID, STATION_ID, OFFICE_ID, ZONE_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from deepureflow_agent_flow_shipment_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from deepureflow_agent_flow_shipment_item
+    where AGENT_FLOW_SHIPMENT_ITEM_ID = #{agentFlowShipmentItemId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from deepureflow_agent_flow_shipment_item
+    where AGENT_FLOW_SHIPMENT_ITEM_ID = #{agentFlowShipmentItemId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItemExample" >
+    delete from deepureflow_agent_flow_shipment_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItem" >
+    insert into deepureflow_agent_flow_shipment_item (AGENT_FLOW_SHIPMENT_ITEM_ID, AGENT_FLOW_ID, 
+      SKU_ID, SKU_NAME, SHIPMENT_QUANTITY, 
+      SHIPMENT_MIN_QUANTITY, BASE_UNIT_CODE, BASE_UNIT, 
+      MIN_UNIT_CODE, MIN_UNIT, TERMINAL_ID, 
+      HIERARCHY_ID, CHANNEL_ID, STATION_ID, 
+      OFFICE_ID, ZONE_ID)
+    values (#{agentFlowShipmentItemId,jdbcType=VARCHAR}, #{agentFlowId,jdbcType=VARCHAR}, 
+      #{skuId,jdbcType=VARCHAR}, #{skuName,jdbcType=VARCHAR}, #{shipmentQuantity,jdbcType=INTEGER}, 
+      #{shipmentMinQuantity,jdbcType=INTEGER}, #{baseUnitCode,jdbcType=VARCHAR}, #{baseUnit,jdbcType=VARCHAR}, 
+      #{minUnitCode,jdbcType=VARCHAR}, #{minUnit,jdbcType=VARCHAR}, #{terminalId,jdbcType=VARCHAR}, 
+      #{hierarchyId,jdbcType=VARCHAR}, #{channelId,jdbcType=VARCHAR}, #{stationId,jdbcType=VARCHAR}, 
+      #{officeId,jdbcType=VARCHAR}, #{zoneId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItem" >
+    insert into deepureflow_agent_flow_shipment_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="agentFlowShipmentItemId != null" >
+        AGENT_FLOW_SHIPMENT_ITEM_ID,
+      </if>
+      <if test="agentFlowId != null" >
+        AGENT_FLOW_ID,
+      </if>
+      <if test="skuId != null" >
+        SKU_ID,
+      </if>
+      <if test="skuName != null" >
+        SKU_NAME,
+      </if>
+      <if test="shipmentQuantity != null" >
+        SHIPMENT_QUANTITY,
+      </if>
+      <if test="shipmentMinQuantity != null" >
+        SHIPMENT_MIN_QUANTITY,
+      </if>
+      <if test="baseUnitCode != null" >
+        BASE_UNIT_CODE,
+      </if>
+      <if test="baseUnit != null" >
+        BASE_UNIT,
+      </if>
+      <if test="minUnitCode != null" >
+        MIN_UNIT_CODE,
+      </if>
+      <if test="minUnit != null" >
+        MIN_UNIT,
+      </if>
+      <if test="terminalId != null" >
+        TERMINAL_ID,
+      </if>
+      <if test="hierarchyId != null" >
+        HIERARCHY_ID,
+      </if>
+      <if test="channelId != null" >
+        CHANNEL_ID,
+      </if>
+      <if test="stationId != null" >
+        STATION_ID,
+      </if>
+      <if test="officeId != null" >
+        OFFICE_ID,
+      </if>
+      <if test="zoneId != null" >
+        ZONE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="agentFlowShipmentItemId != null" >
+        #{agentFlowShipmentItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="agentFlowId != null" >
+        #{agentFlowId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null" >
+        #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null" >
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentQuantity != null" >
+        #{shipmentQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="shipmentMinQuantity != null" >
+        #{shipmentMinQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="baseUnitCode != null" >
+        #{baseUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="baseUnit != null" >
+        #{baseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnitCode != null" >
+        #{minUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnit != null" >
+        #{minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalId != null" >
+        #{terminalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyId != null" >
+        #{hierarchyId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        #{channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="officeId != null" >
+        #{officeId,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneId != null" >
+        #{zoneId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItemExample" resultType="java.lang.Integer" >
+    select count(*) from deepureflow_agent_flow_shipment_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update deepureflow_agent_flow_shipment_item
+    <set >
+      <if test="record.agentFlowShipmentItemId != null" >
+        AGENT_FLOW_SHIPMENT_ITEM_ID = #{record.agentFlowShipmentItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentFlowId != null" >
+        AGENT_FLOW_ID = #{record.agentFlowId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuId != null" >
+        SKU_ID = #{record.skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuName != null" >
+        SKU_NAME = #{record.skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shipmentQuantity != null" >
+        SHIPMENT_QUANTITY = #{record.shipmentQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.shipmentMinQuantity != null" >
+        SHIPMENT_MIN_QUANTITY = #{record.shipmentMinQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.baseUnitCode != null" >
+        BASE_UNIT_CODE = #{record.baseUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseUnit != null" >
+        BASE_UNIT = #{record.baseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minUnitCode != null" >
+        MIN_UNIT_CODE = #{record.minUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minUnit != null" >
+        MIN_UNIT = #{record.minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.terminalId != null" >
+        TERMINAL_ID = #{record.terminalId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hierarchyId != null" >
+        HIERARCHY_ID = #{record.hierarchyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelId != null" >
+        CHANNEL_ID = #{record.channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stationId != null" >
+        STATION_ID = #{record.stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.officeId != null" >
+        OFFICE_ID = #{record.officeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zoneId != null" >
+        ZONE_ID = #{record.zoneId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update deepureflow_agent_flow_shipment_item
+    set AGENT_FLOW_SHIPMENT_ITEM_ID = #{record.agentFlowShipmentItemId,jdbcType=VARCHAR},
+      AGENT_FLOW_ID = #{record.agentFlowId,jdbcType=VARCHAR},
+      SKU_ID = #{record.skuId,jdbcType=VARCHAR},
+      SKU_NAME = #{record.skuName,jdbcType=VARCHAR},
+      SHIPMENT_QUANTITY = #{record.shipmentQuantity,jdbcType=INTEGER},
+      SHIPMENT_MIN_QUANTITY = #{record.shipmentMinQuantity,jdbcType=INTEGER},
+      BASE_UNIT_CODE = #{record.baseUnitCode,jdbcType=VARCHAR},
+      BASE_UNIT = #{record.baseUnit,jdbcType=VARCHAR},
+      MIN_UNIT_CODE = #{record.minUnitCode,jdbcType=VARCHAR},
+      MIN_UNIT = #{record.minUnit,jdbcType=VARCHAR},
+      TERMINAL_ID = #{record.terminalId,jdbcType=VARCHAR},
+      HIERARCHY_ID = #{record.hierarchyId,jdbcType=VARCHAR},
+      CHANNEL_ID = #{record.channelId,jdbcType=VARCHAR},
+      STATION_ID = #{record.stationId,jdbcType=VARCHAR},
+      OFFICE_ID = #{record.officeId,jdbcType=VARCHAR},
+      ZONE_ID = #{record.zoneId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItem" >
+    update deepureflow_agent_flow_shipment_item
+    <set >
+      <if test="agentFlowId != null" >
+        AGENT_FLOW_ID = #{agentFlowId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null" >
+        SKU_ID = #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null" >
+        SKU_NAME = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentQuantity != null" >
+        SHIPMENT_QUANTITY = #{shipmentQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="shipmentMinQuantity != null" >
+        SHIPMENT_MIN_QUANTITY = #{shipmentMinQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="baseUnitCode != null" >
+        BASE_UNIT_CODE = #{baseUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="baseUnit != null" >
+        BASE_UNIT = #{baseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnitCode != null" >
+        MIN_UNIT_CODE = #{minUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnit != null" >
+        MIN_UNIT = #{minUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalId != null" >
+        TERMINAL_ID = #{terminalId,jdbcType=VARCHAR},
+      </if>
+      <if test="hierarchyId != null" >
+        HIERARCHY_ID = #{hierarchyId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null" >
+        CHANNEL_ID = #{channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        STATION_ID = #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="officeId != null" >
+        OFFICE_ID = #{officeId,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneId != null" >
+        ZONE_ID = #{zoneId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AGENT_FLOW_SHIPMENT_ITEM_ID = #{agentFlowShipmentItemId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowShipmentItem" >
+    update deepureflow_agent_flow_shipment_item
+    set AGENT_FLOW_ID = #{agentFlowId,jdbcType=VARCHAR},
+      SKU_ID = #{skuId,jdbcType=VARCHAR},
+      SKU_NAME = #{skuName,jdbcType=VARCHAR},
+      SHIPMENT_QUANTITY = #{shipmentQuantity,jdbcType=INTEGER},
+      SHIPMENT_MIN_QUANTITY = #{shipmentMinQuantity,jdbcType=INTEGER},
+      BASE_UNIT_CODE = #{baseUnitCode,jdbcType=VARCHAR},
+      BASE_UNIT = #{baseUnit,jdbcType=VARCHAR},
+      MIN_UNIT_CODE = #{minUnitCode,jdbcType=VARCHAR},
+      MIN_UNIT = #{minUnit,jdbcType=VARCHAR},
+      TERMINAL_ID = #{terminalId,jdbcType=VARCHAR},
+      HIERARCHY_ID = #{hierarchyId,jdbcType=VARCHAR},
+      CHANNEL_ID = #{channelId,jdbcType=VARCHAR},
+      STATION_ID = #{stationId,jdbcType=VARCHAR},
+      OFFICE_ID = #{officeId,jdbcType=VARCHAR},
+      ZONE_ID = #{zoneId,jdbcType=VARCHAR}
+    where AGENT_FLOW_SHIPMENT_ITEM_ID = #{agentFlowShipmentItemId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="queryAgentFlowShipmentItem" resultMap="ItemBaseMap"
+        parameterType="map">
+        SELECT
+        AFS.*, TER.TERMINAL_ID,
+        TER.TERMINAL_NAME,
+        TER.ERP_CODE,
+        CHN.CHANNEL_ID,
+        CHN.CHANNEL_NAME,
+        HIE.HIERARCHY_ID,
+        HIE.HIERARCHY_NAME,
+        HIE.HIERARCHY_NICK,
+        STA.STATION_ID,
+        STA.STATION_CODE,
+        STA.STATION_NAME,
+        OFF.OFFICE_ID,
+        OFF.OFFICE_CODE,
+        OFF.OFFICE_NAME,
+        ZON.ZONE_ID,
+        ZON.ZONE_CODE,
+        ZON.ZONE_NAME
+        FROM
+        deepureflow_agent_flow_shipment_item AFS
+        LEFT JOIN user_terminal TER ON TER.TERMINAL_ID = AFS.TERMINAL_ID
+        LEFT JOIN system_channel CHN ON AFS.CHANNEL_ID = CHN.CHANNEL_ID
+        LEFT
+        JOIN system_hierarchy HIE ON AFS.HIERARCHY_ID = HIE.HIERARCHY_ID
+        LEFT
+        JOIN system_station STA ON STA.STATION_ID = AFS.STATION_ID
+        LEFT JOIN
+        system_office OFF ON OFF.OFFICE_ID = AFS.OFFICE_ID
+        LEFT JOIN
+        system_zone ZON ON ZON.ZONE_ID = AFS.ZONE_ID
+        <where>
+            1=1
+            <if test="agentFlowId != null and agentFlowId != ''">
+                AND AFS.AGENT_FLOW_ID = #{agentFlowId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="counAgentFlowItemById" resultType="java.lang.String" parameterType="map">
+    SELECT
+		SUBSTR(MAX(AGENT_FLOW_SHIPMENT_ITEM_ID),27,3) 
+		from deepureflow_agent_flow_shipment_item 
+		where AGENT_FLOW_ID=#{agentFlowId,jdbcType=VARCHAR}
+	</select>
+</mapper>

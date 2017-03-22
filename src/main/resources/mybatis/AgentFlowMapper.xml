@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IAgentFlowMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tasly.deepureflow.domain.deepureflow.AgentFlow">
+		<id column="AGENT_FLOW_ID" property="agentFlowId" jdbcType="VARCHAR" />
+		<result column="AGENT_FLOW_DATE" property="agentFlowDate"
+			jdbcType="TIMESTAMP" />
+		<result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+		<result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+		<result column="CREATE_AT" property="createAt" jdbcType="TIMESTAMP" />
+		<result column="AGENT_FLOW_STATUS" property="agentFlowStatus"
+			jdbcType="TINYINT" />
+	</resultMap>
+
+	<resultMap id="queryAgentFlowForPageMap"
+		type="com.tasly.deepureflow.domain.deepureflow.AgentFlow">
+		<id column="AGENT_FLOW_ID" property="agentFlowId" jdbcType="VARCHAR" />
+		<result column="AGENT_FLOW_DATE" property="agentFlowDate"
+			jdbcType="TIMESTAMP" />
+		<result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+		<result column="CREATE_AT" property="createAt" jdbcType="TIMESTAMP" />
+		<result column="AGENT_FLOW_STATUS" property="agentFlowStatus"
+			jdbcType="TINYINT" />
+		<association property="agent"
+			javaType="com.tasly.deepureflow.domain.user.Agent">
+			<id column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+			<result column="AGENT_NAME" property="agentName" jdbcType="VARCHAR" />
+			<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		AGENT_FLOW_ID, AGENT_FLOW_DATE, AGENT_ID, CREATE_BY, CREATE_AT, AGENT_FLOW_STATUS
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from deepureflow_agent_flow
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from deepureflow_agent_flow
+		where AGENT_FLOW_ID = #{agentFlowId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from deepureflow_agent_flow
+		where AGENT_FLOW_ID = #{agentFlowId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowExample">
+		delete from deepureflow_agent_flow
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlow">
+		insert into deepureflow_agent_flow (AGENT_FLOW_ID, AGENT_FLOW_DATE,
+		AGENT_ID,
+		CREATE_BY, CREATE_AT, AGENT_FLOW_STATUS
+		)
+		values (#{agentFlowId,jdbcType=VARCHAR},
+		#{agentFlowDate,jdbcType=TIMESTAMP}, #{agentId,jdbcType=VARCHAR},
+		#{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP},
+		#{agentFlowStatus,jdbcType=TINYINT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlow">
+		insert into deepureflow_agent_flow
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="agentFlowId != null">
+				AGENT_FLOW_ID,
+			</if>
+			<if test="agentFlowDate != null">
+				AGENT_FLOW_DATE,
+			</if>
+			<if test="agentId != null">
+				AGENT_ID,
+			</if>
+			<if test="createBy != null">
+				CREATE_BY,
+			</if>
+			<if test="createAt != null">
+				CREATE_AT,
+			</if>
+			<if test="agentFlowStatus != null">
+				AGENT_FLOW_STATUS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="agentFlowId != null">
+				#{agentFlowId,jdbcType=VARCHAR},
+			</if>
+			<if test="agentFlowDate != null">
+				#{agentFlowDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="agentId != null">
+				#{agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createAt != null">
+				#{createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="agentFlowStatus != null">
+				#{agentFlowStatus,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlowExample"
+		resultType="java.lang.Integer">
+		select count(*) from deepureflow_agent_flow
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update deepureflow_agent_flow
+		<set>
+			<if test="record.agentFlowId != null">
+				AGENT_FLOW_ID = #{record.agentFlowId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.agentFlowDate != null">
+				AGENT_FLOW_DATE = #{record.agentFlowDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.agentId != null">
+				AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createBy != null">
+				CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createAt != null">
+				CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.agentFlowStatus != null">
+				AGENT_FLOW_STATUS = #{record.agentFlowStatus,jdbcType=TINYINT},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update deepureflow_agent_flow
+		set AGENT_FLOW_ID = #{record.agentFlowId,jdbcType=VARCHAR},
+		AGENT_FLOW_DATE = #{record.agentFlowDate,jdbcType=TIMESTAMP},
+		AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+		CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+		CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+		AGENT_FLOW_STATUS = #{record.agentFlowStatus,jdbcType=TINYINT}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlow">
+		update deepureflow_agent_flow
+		<set>
+			<if test="agentFlowDate != null">
+				AGENT_FLOW_DATE = #{agentFlowDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="agentId != null">
+				AGENT_ID = #{agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createAt != null">
+				CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="agentFlowStatus != null">
+				AGENT_FLOW_STATUS = #{agentFlowStatus,jdbcType=TINYINT},
+			</if>
+		</set>
+		where AGENT_FLOW_ID = #{agentFlowId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.deepureflow.AgentFlow">
+		update deepureflow_agent_flow
+		set AGENT_FLOW_DATE = #{agentFlowDate,jdbcType=TIMESTAMP},
+		AGENT_ID = #{agentId,jdbcType=VARCHAR},
+		CREATE_BY = #{createBy,jdbcType=VARCHAR},
+		CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+		AGENT_FLOW_STATUS = #{agentFlowStatus,jdbcType=TINYINT}
+		where AGENT_FLOW_ID = #{agentFlowId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="queryAllAgentFlow" resultMap="queryAgentFlowForPageMap"
+		parameterType="map">
+		SELECT
+		DAF.AGENT_FLOW_ID,
+		AGE.AGENT_ID,
+		AGE.AGENT_NAME,
+		AGE.IS_DELETE,
+		DAF.AGENT_FLOW_DATE,
+		DAF.CREATE_AT,
+		DAF.CREATE_BY
+		FROM
+		deepureflow_agent_flow DAF
+		LEFT JOIN user_agent AGE ON DAF.AGENT_ID = AGE.AGENT_ID
+
+		WHERE
+		DAF.AGENT_FLOW_STATUS = 1
+		<if test="planYear != null and planYear != ''">
+			AND YEAR(DAF.AGENT_FLOW_DATE) = #{planYear}
+		</if>
+		<if test="planMonth != null and planMonth != ''">
+			AND MONTH(DAF.AGENT_FLOW_DATE) = #{planMonth}
+		</if>
+		<if test="agentId != null and agentId != ''">
+			AND DAF.AGENT_ID like CONCAT('%',#{agentId},'%')
+		</if>
+		<if test="agentName != null and agentName != ''">
+			AND AGE.AGENT_NAME like CONCAT('%',#{agentName},'%')
+		</if>
+		<if test="createBy != null and createBy != ''">
+			AND DAF.CREATE_BY like CONCAT('%',#{createBy},'%')
+		</if>
+		ORDER BY AGE.IS_DELETE ASC,DAF.AGENT_FLOW_DATE ASC
+	</select>
+	
+	 <select id="queryAgentFlowForRegional" resultMap="queryAgentFlowForPageMap"
+		parameterType="map">
+		SELECT
+			DAF.AGENT_FLOW_ID,
+			AGE.AGENT_ID,
+			AGE.AGENT_NAME,
+			AGE.IS_DELETE,
+			DAF.AGENT_FLOW_DATE,
+			DAF.CREATE_AT,
+			DAF.CREATE_BY
+		FROM
+			deepureflow_agent_flow DAF
+			LEFT JOIN user_agent AGE ON DAF.AGENT_ID = AGE.AGENT_ID
+		WHERE DAF.AGENT_FLOW_STATUS=1
+			AND DAF.AGENT_ID IN (
+				SELECT
+					DISTINCT(AGE.AGENT_ID)
+					FROM
+					user_agent AGE
+					LEFT JOIN user_terminal TER ON AGE.AGENT_ID=TER.AGENT_ID AND TER.IS_DELETE=0
+					LEFT
+					JOIN system_office OFF ON OFF.OFFICE_CODE = TER.OFFICE_CODE AND OFF.IS_DELETE=0 
+					LEFT JOIN
+					system_zone ZON ON ZON.ZONE_CODE = TER.ZONE_CODE AND ZON.IS_DELETE=0
+				WHERE 1=1
+				<if test="zoneCode != null and zoneCode != ''">
+					AND ZON.ZONE_CODE = #{zoneCode,jdbcType=VARCHAR}
+				</if>
+			)
+			ORDER BY AGE.IS_DELETE ASC,DAF.AGENT_FLOW_DATE ASC
+	</select>
+	
+	<select id="queryAgentFlowForOffice" resultMap="queryAgentFlowForPageMap"
+		parameterType="map">
+		SELECT
+			DAF.AGENT_FLOW_ID,
+			AGE.AGENT_ID,
+			AGE.AGENT_NAME,
+			AGE.IS_DELETE,
+			DAF.AGENT_FLOW_DATE,
+			DAF.CREATE_AT,
+			DAF.CREATE_BY
+		FROM
+			deepureflow_agent_flow DAF
+			LEFT JOIN user_agent AGE ON DAF.AGENT_ID = AGE.AGENT_ID
+		WHERE DAF.AGENT_FLOW_STATUS=1
+			AND DAF.AGENT_ID IN (
+				SELECT
+					DISTINCT(AGE.AGENT_ID)
+					FROM
+					user_agent AGE
+					LEFT JOIN user_terminal TER ON AGE.AGENT_ID=TER.AGENT_ID AND TER.IS_DELETE=0
+					LEFT
+					JOIN system_office OFF ON OFF.OFFICE_CODE = TER.OFFICE_CODE AND OFF.IS_DELETE=0
+				WHERE 1=1
+				<if test="officeCode != null and officeCode != ''">
+					AND OFF.OFFICE_CODE = #{officeCode,jdbcType=VARCHAR}
+				</if>
+			)
+			ORDER BY AGE.IS_DELETE ASC,DAF.AGENT_FLOW_DATE ASC
+	</select>
+	
+	
+</mapper>

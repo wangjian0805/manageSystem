@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.ISalePlanMapper">
+	<resultMap id="BaseResultMap"
+		type="com.tasly.deepureflow.domain.deepureflow.SalePlan">
+		<id column="SALE_PLAN_ID" property="salePlanId" jdbcType="VARCHAR" />
+		<result column="SALE_PLAN_DATE" property="salePlanDate"
+			jdbcType="TIMESTAMP" />
+		<result column="TOTAL_PRICE" property="totalPrice" jdbcType="DECIMAL" />
+		<result column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+		<result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+		<result column="OFFICE_ID" property="officeId" jdbcType="VARCHAR" />
+		<result column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+		<result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+		<result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+		<result column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+		<result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+		<result column="CREATE_AT" property="createAt" jdbcType="TIMESTAMP" />
+		<result column="SALE_PLAN_STATUS" property="salePlanStatus"
+			jdbcType="TINYINT" />
+	</resultMap>
+	<resultMap id="queryTerminalSalePlanForPageMap"
+		type="com.tasly.deepureflow.domain.deepureflow.SalePlan">
+		<id column="SALE_PLAN_ID" property="salePlanId" jdbcType="VARCHAR" />
+		<result column="SALE_PLAN_DATE" property="salePlanDate"
+			jdbcType="TIMESTAMP" />
+		<result column="TOTAL_PRICE" property="totalPrice" jdbcType="DECIMAL" />
+		<result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+		<result column="CREATE_AT" property="createAt" jdbcType="TIMESTAMP" />
+		<result column="SALE_PLAN_STATUS" property="salePlanStatus"
+			jdbcType="TINYINT" />
+		<result column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+		<result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+		<result column="OFFICE_ID" property="officeId" jdbcType="VARCHAR" />
+		<result column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+		<result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+		<result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+		<result column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+		<association property="terminal"
+			javaType="com.tasly.deepureflow.domain.user.Terminal">
+			<id column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+			<result column="TERMINAL_NAME" property="terminalName"
+				jdbcType="VARCHAR" />
+			<result column="TER_ISDELETE" property="isDelete"
+				jdbcType="TINYINT" />
+		</association>
+
+		<association property="agent"
+			javaType="com.tasly.deepureflow.domain.user.Agent">
+			<id column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+			<result column="AGENT_NAME" property="agentName" jdbcType="VARCHAR" />
+			<result column="AGE_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="station"
+			javaType="com.tasly.deepureflow.domain.system.Station">
+			<id column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+			<result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+			<result column="STA_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="office"
+			javaType="com.tasly.deepureflow.domain.system.Office">
+			<id column="OFFICE_ID" property="officeId" jdbcType="VARCHAR" />
+			<result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+			<result column="OFF_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="zone"
+			javaType="com.tasly.deepureflow.domain.system.Zone">
+			<id column="ZONE_ID" property="zoneId" jdbcType="VARCHAR" />
+			<result column="ZONE_NAME" property="zoneName" jdbcType="VARCHAR" />
+			<result column="ZONE_ISDELETE" property="isDelete" jdbcType="TINYINT" />
+		</association>
+
+		<association property="hierarchy"
+			javaType="com.tasly.deepureflow.domain.system.Hierarchy">
+			<id column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+			<result column="HIERARCHY_NAME" property="hierarchyName"
+				jdbcType="VARCHAR" />
+			<result column="HIERARCHY_NICK" property="hierarchyNick"
+				jdbcType="VARCHAR" />
+		</association>
+
+		<association property="channel"
+			javaType="com.tasly.deepureflow.domain.system.Channel">
+			<id column="CHANNEL_ID" property="channelId" jdbcType="VARCHAR" />
+			<result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+			<result column="HIERARCHY_ID" property="hierarchyId" jdbcType="VARCHAR" />
+		</association>
+
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		SALE_PLAN_ID, SALE_PLAN_DATE, TOTAL_PRICE, TERMINAL_ID, STATION_ID, OFFICE_ID,
+		ZONE_ID,
+		AGENT_ID, HIERARCHY_ID, CHANNEL_ID, CREATE_BY, CREATE_AT, SALE_PLAN_STATUS
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tasly.deepureflow.domain.deepureflow.SalePlanExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from deepureflow_sale_plan
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from deepureflow_sale_plan
+		where SALE_PLAN_ID = #{salePlanId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from deepureflow_sale_plan
+		where SALE_PLAN_ID = #{salePlanId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.tasly.deepureflow.domain.deepureflow.SalePlanExample">
+		delete from deepureflow_sale_plan
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.tasly.deepureflow.domain.deepureflow.SalePlan">
+		insert into deepureflow_sale_plan (SALE_PLAN_ID, SALE_PLAN_DATE,
+		TOTAL_PRICE,
+		TERMINAL_ID, STATION_ID, OFFICE_ID,
+		ZONE_ID, AGENT_ID, HIERARCHY_ID,
+		CHANNEL_ID, CREATE_BY, CREATE_AT,
+		SALE_PLAN_STATUS)
+		values (#{salePlanId,jdbcType=VARCHAR}, #{salePlanDate,jdbcType=TIMESTAMP},
+		#{totalPrice,jdbcType=DECIMAL},
+		#{terminalId,jdbcType=VARCHAR}, #{stationId,jdbcType=VARCHAR}, #{officeId,jdbcType=VARCHAR},
+		#{zoneId,jdbcType=VARCHAR}, #{agentId,jdbcType=VARCHAR},
+		#{hierarchyId,jdbcType=VARCHAR},
+		#{channelId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP},
+		#{salePlanStatus,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.deepureflow.SalePlan">
+		insert into deepureflow_sale_plan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="salePlanId != null">
+				SALE_PLAN_ID,
+			</if>
+			<if test="salePlanDate != null">
+				SALE_PLAN_DATE,
+			</if>
+			<if test="totalPrice != null">
+				TOTAL_PRICE,
+			</if>
+			<if test="terminalId != null">
+				TERMINAL_ID,
+			</if>
+			<if test="stationId != null">
+				STATION_ID,
+			</if>
+			<if test="officeId != null">
+				OFFICE_ID,
+			</if>
+			<if test="zoneId != null">
+				ZONE_ID,
+			</if>
+			<if test="agentId != null">
+				AGENT_ID,
+			</if>
+			<if test="hierarchyId != null">
+				HIERARCHY_ID,
+			</if>
+			<if test="channelId != null">
+				CHANNEL_ID,
+			</if>
+			<if test="createBy != null">
+				CREATE_BY,
+			</if>
+			<if test="createAt != null">
+				CREATE_AT,
+			</if>
+			<if test="salePlanStatus != null">
+				SALE_PLAN_STATUS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="salePlanId != null">
+				#{salePlanId,jdbcType=VARCHAR},
+			</if>
+			<if test="salePlanDate != null">
+				#{salePlanDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="totalPrice != null">
+				#{totalPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="terminalId != null">
+				#{terminalId,jdbcType=VARCHAR},
+			</if>
+			<if test="stationId != null">
+				#{stationId,jdbcType=VARCHAR},
+			</if>
+			<if test="officeId != null">
+				#{officeId,jdbcType=VARCHAR},
+			</if>
+			<if test="zoneId != null">
+				#{zoneId,jdbcType=VARCHAR},
+			</if>
+			<if test="agentId != null">
+				#{agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="hierarchyId != null">
+				#{hierarchyId,jdbcType=VARCHAR},
+			</if>
+			<if test="channelId != null">
+				#{channelId,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createAt != null">
+				#{createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="salePlanStatus != null">
+				#{salePlanStatus,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.tasly.deepureflow.domain.deepureflow.SalePlanExample"
+		resultType="java.lang.Integer">
+		select count(*) from deepureflow_sale_plan
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update deepureflow_sale_plan
+		<set>
+			<if test="record.salePlanId != null">
+				SALE_PLAN_ID = #{record.salePlanId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.salePlanDate != null">
+				SALE_PLAN_DATE = #{record.salePlanDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.totalPrice != null">
+				TOTAL_PRICE = #{record.totalPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="record.terminalId != null">
+				TERMINAL_ID = #{record.terminalId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.stationId != null">
+				STATION_ID = #{record.stationId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.officeId != null">
+				OFFICE_ID = #{record.officeId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.zoneId != null">
+				ZONE_ID = #{record.zoneId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.agentId != null">
+				AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.hierarchyId != null">
+				HIERARCHY_ID = #{record.hierarchyId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.channelId != null">
+				CHANNEL_ID = #{record.channelId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createBy != null">
+				CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createAt != null">
+				CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.salePlanStatus != null">
+				SALE_PLAN_STATUS = #{record.salePlanStatus,jdbcType=TINYINT},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update deepureflow_sale_plan
+		set SALE_PLAN_ID = #{record.salePlanId,jdbcType=VARCHAR},
+		SALE_PLAN_DATE = #{record.salePlanDate,jdbcType=TIMESTAMP},
+		TOTAL_PRICE = #{record.totalPrice,jdbcType=DECIMAL},
+		TERMINAL_ID = #{record.terminalId,jdbcType=VARCHAR},
+		STATION_ID = #{record.stationId,jdbcType=VARCHAR},
+		OFFICE_ID = #{record.officeId,jdbcType=VARCHAR},
+		ZONE_ID = #{record.zoneId,jdbcType=VARCHAR},
+		AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+		HIERARCHY_ID = #{record.hierarchyId,jdbcType=VARCHAR},
+		CHANNEL_ID = #{record.channelId,jdbcType=VARCHAR},
+		CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+		CREATE_AT = #{record.createAt,jdbcType=TIMESTAMP},
+		SALE_PLAN_STATUS = #{record.salePlanStatus,jdbcType=TINYINT}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.deepureflow.SalePlan">
+		update deepureflow_sale_plan
+		<set>
+			<if test="salePlanDate != null">
+				SALE_PLAN_DATE = #{salePlanDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="totalPrice != null">
+				TOTAL_PRICE = #{totalPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="terminalId != null">
+				TERMINAL_ID = #{terminalId,jdbcType=VARCHAR},
+			</if>
+			<if test="stationId != null">
+				STATION_ID = #{stationId,jdbcType=VARCHAR},
+			</if>
+			<if test="officeId != null">
+				OFFICE_ID = #{officeId,jdbcType=VARCHAR},
+			</if>
+			<if test="zoneId != null">
+				ZONE_ID = #{zoneId,jdbcType=VARCHAR},
+			</if>
+			<if test="agentId != null">
+				AGENT_ID = #{agentId,jdbcType=VARCHAR},
+			</if>
+			<if test="hierarchyId != null">
+				HIERARCHY_ID = #{hierarchyId,jdbcType=VARCHAR},
+			</if>
+			<if test="channelId != null">
+				CHANNEL_ID = #{channelId,jdbcType=VARCHAR},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createAt != null">
+				CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="salePlanStatus != null">
+				SALE_PLAN_STATUS = #{salePlanStatus,jdbcType=TINYINT},
+			</if>
+		</set>
+		where SALE_PLAN_ID = #{salePlanId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.deepureflow.SalePlan">
+		update deepureflow_sale_plan
+		set SALE_PLAN_DATE = #{salePlanDate,jdbcType=TIMESTAMP},
+		TOTAL_PRICE = #{totalPrice,jdbcType=DECIMAL},
+		TERMINAL_ID = #{terminalId,jdbcType=VARCHAR},
+		STATION_ID = #{stationId,jdbcType=VARCHAR},
+		OFFICE_ID = #{officeId,jdbcType=VARCHAR},
+		ZONE_ID = #{zoneId,jdbcType=VARCHAR},
+		AGENT_ID = #{agentId,jdbcType=VARCHAR},
+		HIERARCHY_ID = #{hierarchyId,jdbcType=VARCHAR},
+		CHANNEL_ID = #{channelId,jdbcType=VARCHAR},
+		CREATE_BY = #{createBy,jdbcType=VARCHAR},
+		CREATE_AT = #{createAt,jdbcType=TIMESTAMP},
+		SALE_PLAN_STATUS = #{salePlanStatus,jdbcType=TINYINT}
+		where SALE_PLAN_ID = #{salePlanId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="queryAllSalePlan" resultMap="queryTerminalSalePlanForPageMap"
+		parameterType="map">
+		SELECT
+		TER.TERMINAL_ID,<!-- 终端编号 -->
+		TER.ERP_CODE,
+		TER.TERMINAL_NAME,<!-- 终端名称 -->
+		TER.IS_DELETE AS TER_ISDELETE,
+		STA.STATION_ID,<!-- 所属岗位ID -->
+		STA.STATION_NAME,<!-- 所属岗位名称 -->
+		STA.IS_DELETE AS STA_ISDELETE,
+		AGE.AGENT_ID,<!-- 所属经销商ID -->
+		AGE.AGENT_NAME,<!-- 所属经销商名称 -->
+		AGE.IS_DELETE AS AGE_ISDELETE,
+		OFF.OFFICE_ID,<!-- -->
+		OFF.OFFICE_NAME,<!-- -->
+		OFF.IS_DELETE AS OFF_ISDELETE,
+		ZONE.ZONE_ID,<!-- 大区ID -->
+		ZONE.ZONE_NAME,<!-- 大区名称 -->
+		ZONE.IS_DELETE AS ZONE_ISDELETE,
+		DSP.SALE_PLAN_DATE,<!-- 计划时间 -->
+		DSP.CREATE_BY,<!-- 创建人 -->
+		DSP.CREATE_AT,<!-- 创建时间 -->
+		DSP.SALE_PLAN_ID,<!-- 计划ID -->
+		DSP.SALE_PLAN_STATUS,<!-- 计划状态 -->
+		DSP.TOTAL_PRICE
+
+		FROM
+		deepureflow_sale_plan DSP
+		LEFT JOIN user_terminal
+		TER ON DSP.TERMINAL_ID = TER.TERMINAL_ID
+		LEFT JOIN user_agent AGE ON
+		TER.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_station STA ON
+		DSP.STATION_ID = STA.STATION_ID
+		LEFT JOIN system_office OFF ON
+		DSP.OFFICE_ID = OFF.OFFICE_ID
+		LEFT JOIN system_zone ZONE ON DSP.ZONE_ID = ZONE.ZONE_ID
+		WHERE DSP.SALE_PLAN_STATUS = 0
+		<if test="planYear != null and planYear != ''">
+			AND YEAR(DSP.SALE_PLAN_DATE) = #{planYear}
+		</if>
+		<if test="agentId != null and agentId != '-1' and agentId != ''">
+			AND AGE.AGENT_ID = #{agentId}
+		</if>
+		<if test="terminalId != null and terminalId != ''">
+			AND TER.TERMINAL_ID like CONCAT('%',#{terminalId},'%')
+		</if>
+		<if test="zoneCode_q != null and zoneCode_q != '-1' and zoneCode_q != ''">
+			AND ZONE.ZONE_CODE = #{zoneCode_q}
+		</if>
+		<if test="planMonth != null and planMonth != ''">
+			AND MONTH(DSP.SALE_PLAN_DATE) = #{planMonth}
+		</if>
+		<if test="stationCode != null and stationCode != '-1' and stationCode != ''">
+			AND STA.STATION_CODE = #{stationCode}
+		</if>
+		ORDER BY TER.IS_DELETE ASC,AGE.IS_DELETE ASC,DSP.SALE_PLAN_DATE ASC
+	</select>
+	<select id="querySalePlanForRegional" resultMap="queryTerminalSalePlanForPageMap"
+		parameterType="map">
+				SELECT
+		TER.TERMINAL_ID,
+		TER.ERP_CODE,
+		TER.TERMINAL_NAME,
+		TER.IS_DELETE AS TER_ISDELETE,
+		STA.STATION_ID,
+		STA.STATION_NAME,
+		STA.IS_DELETE AS STA_ISDELETE,
+		AGE.AGENT_ID,
+		AGE.AGENT_NAME,
+		AGE.IS_DELETE AS AGE_ISDELETE,
+		OFF.OFFICE_ID,
+		OFF.OFFICE_NAME,
+		OFF.IS_DELETE AS OFF_ISDELETE,
+		ZONE.ZONE_ID,
+		ZONE.ZONE_NAME,
+		ZONE.IS_DELETE AS ZONE_ISDELETE,
+		DSP.SALE_PLAN_DATE,
+		DSP.CREATE_BY,
+		DSP.CREATE_AT,
+		DSP.SALE_PLAN_ID,
+		DSP.SALE_PLAN_STATUS,
+		DSP.TOTAL_PRICE
+
+		FROM
+		deepureflow_sale_plan DSP
+		LEFT JOIN user_terminal TER ON DSP.TERMINAL_ID = TER.TERMINAL_ID
+		LEFT JOIN user_agent AGE ON DSP.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_station STA ON DSP.STATION_ID = STA.STATION_ID
+		LEFT JOIN system_office OFF ON DSP.OFFICE_ID = OFF.OFFICE_ID
+		LEFT JOIN system_zone ZONE ON DSP.ZONE_ID = ZONE.ZONE_ID
+		WHERE DSP.SALE_PLAN_STATUS = 0
+		<if test="zoneCode != null and zoneCode != ''">
+			AND ZONE.ZONE_CODE = #{zoneCode,jdbcType=VARCHAR}
+		</if>
+		<if test="planYear != null and planYear != ''">
+			AND YEAR(DSP.SALE_PLAN_DATE) = #{planYear}
+		</if>
+		<if test="agentId != null and agentId != '-1' and agentId != ''">
+			AND AGE.AGENT_ID = #{agentId}
+		</if>
+		<if test="terminalId != null and terminalId != ''">
+			AND TER.TERMINAL_ID like CONCAT('%',#{terminalId},'%')
+		</if>
+		<if test="zoneCode_q != null and zoneCode_q != '-1'">
+			AND ZONE.ZONE_CODE = #{zoneCode_q}
+		</if>
+		<if test="planMonth != null and planMonth != ''">
+			AND MONTH(DSP.SALE_PLAN_DATE) = #{planMonth}
+		</if>
+		<if test="stationCode != null and stationCode != '-1'">
+			AND STA.STATION_CODE = #{stationCode}
+		</if>
+		ORDER BY TER.IS_DELETE ASC,AGE.IS_DELETE ASC,DSP.SALE_PLAN_DATE ASC
+	</select>
+
+	<select id="querySalePlanForOffice" resultMap="queryTerminalSalePlanForPageMap"
+		parameterType="map">
+				SELECT
+		TER.TERMINAL_ID,<!-- 终端编号 -->
+		TER.ERP_CODE,
+		TER.TERMINAL_NAME,<!-- 终端名称 -->
+		TER.IS_DELETE AS TER_ISDELETE,
+		STA.STATION_ID,<!-- 所属岗位ID -->
+		STA.STATION_NAME,<!-- 所属岗位名称 -->
+		STA.IS_DELETE AS STA_ISDELETE,
+		AGE.AGENT_ID,<!-- 所属经销商ID -->
+		AGE.AGENT_NAME,<!-- 所属经销商名称 -->
+		AGE.IS_DELETE AS AGE_ISDELETE,
+		OFF.OFFICE_ID,<!-- -->
+		OFF.OFFICE_NAME,<!-- -->
+		OFF.IS_DELETE AS OFF_ISDELETE,
+		ZONE.ZONE_ID,<!-- 大区ID -->
+		ZONE.ZONE_NAME,<!-- 大区名称 -->
+		ZONE.IS_DELETE AS ZONE_ISDELETE,
+		DSP.SALE_PLAN_DATE,<!-- 计划时间 -->
+		DSP.CREATE_BY,<!-- 创建人 -->
+		DSP.CREATE_AT,<!-- 创建时间 -->
+		DSP.SALE_PLAN_ID,<!-- 计划ID -->
+		DSP.SALE_PLAN_STATUS,<!-- 计划状态 -->
+		DSP.TOTAL_PRICE
+
+		FROM
+		deepureflow_sale_plan DSP
+		LEFT JOIN user_terminal
+		TER ON DSP.TERMINAL_ID = TER.TERMINAL_ID
+		LEFT JOIN user_agent AGE ON
+		DSP.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_station STA ON
+		DSP.STATION_ID = STA.STATION_ID
+		LEFT JOIN system_office OFF ON
+		DSP.OFFICE_ID = OFF.OFFICE_ID
+		LEFT JOIN system_zone ZONE ON DSP.ZONE_ID
+		= ZONE.ZONE_ID
+		WHERE DSP.SALE_PLAN_STATUS = 0
+		<if test="officeCode != null and officeCode != ''">
+			AND OFF.OFFICE_CODE = #{officeCode,jdbcType=VARCHAR}
+		</if>
+		<if test="planYear != null and planYear != ''">
+			AND YEAR(DSP.SALE_PLAN_DATE) = #{planYear}
+		</if>
+		<if test="agentId != null and agentId != '-1' and agentId != ''">
+			AND AGE.AGENT_ID = #{agentId}
+		</if>
+		<if test="terminalId != null and terminalId != ''">
+			AND TER.TERMINAL_ID like CONCAT('%',#{terminalId},'%')
+		</if>
+		<if test="zoneCode_q != null and zoneCode_q != '-1'">
+			AND ZONE.ZONE_CODE = #{zoneCode_q}
+		</if>
+		<if test="planMonth != null and planMonth != ''">
+			AND MONTH(DSP.SALE_PLAN_DATE) = #{planMonth}
+		</if>
+		<if test="stationCode != null and stationCode != '-1'">
+			AND STA.STATION_CODE = #{stationCode}
+		</if>
+		ORDER BY TER.IS_DELETE ASC,AGE.IS_DELETE ASC,DSP.SALE_PLAN_DATE ASC
+	</select>
+	<select id="querySalePlanForSaleMan" resultMap="queryTerminalSalePlanForPageMap"
+		parameterType="map">
+				SELECT
+		TER.TERMINAL_ID,<!-- 终端编号 -->
+		TER.ERP_CODE,
+		TER.TERMINAL_NAME,<!-- 终端名称 -->
+		TER.IS_DELETE AS TER_ISDELETE,
+		STA.STATION_ID,<!-- 所属岗位ID -->
+		STA.STATION_NAME,<!-- 所属岗位名称 -->
+		STA.IS_DELETE AS STA_ISDELETE,
+		AGE.AGENT_ID,<!-- 所属经销商ID -->
+		AGE.AGENT_NAME,<!-- 所属经销商名称 -->
+		AGE.IS_DELETE AS AGE_ISDELETE,
+		OFF.OFFICE_ID,<!-- -->
+		OFF.OFFICE_NAME,<!-- -->
+		OFF.IS_DELETE AS OFF_ISDELETE,
+		ZONE.ZONE_ID,<!-- 大区ID -->
+		ZONE.ZONE_NAME,<!-- 大区名称 -->
+		ZONE.IS_DELETE AS ZONE_ISDELETE,
+		DSP.SALE_PLAN_DATE,<!-- 计划时间 -->
+		DSP.CREATE_BY,<!-- 创建人 -->
+		DSP.CREATE_AT,<!-- 创建时间 -->
+		DSP.SALE_PLAN_ID,<!-- 计划ID -->
+		DSP.SALE_PLAN_STATUS,<!-- 计划状态 -->
+		DSP.TOTAL_PRICE
+
+		FROM
+		deepureflow_sale_plan DSP
+		LEFT JOIN user_terminal
+		TER ON DSP.TERMINAL_ID = TER.TERMINAL_ID
+		LEFT JOIN user_agent AGE ON
+		DSP.AGENT_ID = AGE.AGENT_ID
+		LEFT JOIN system_station STA ON
+		DSP.STATION_ID = STA.STATION_ID
+		LEFT JOIN system_office OFF ON
+		DSP.OFFICE_ID = OFF.OFFICE_ID
+		LEFT JOIN system_zone ZONE ON DSP.ZONE_ID
+		= ZONE.ZONE_ID
+		LEFT JOIN security_user_station SUS ON STA.STATION_CODE = SUS.STATION_CODE
+		JOIN security_user SUR ON SUS.USER_ID = SUR.USER_ID
+		AND SUR.USER_ID IS NOT NULL
+		WHERE DSP.SALE_PLAN_STATUS = 0
+		<if test="userId != null and userId != ''">
+			AND SUR.USER_ID = #{userId,jdbcType=VARCHAR}
+		</if>
+		<if test="planYear != null and planYear != ''">
+			AND YEAR(DSP.SALE_PLAN_DATE) = #{planYear}
+		</if>
+		<if test="agentId != null and agentId != '-1' and agentId != ''">
+			AND AGE.AGENT_ID = #{agentId}
+		</if>
+		<if test="terminalId != null and terminalId != ''">
+			AND TER.TERMINAL_ID like CONCAT('%',#{terminalId},'%')
+		</if>
+		<if test="zoneCode_q != null and zoneCode_q != '-1'">
+			AND ZONE.ZONE_CODE = #{zoneCode_q}
+		</if>
+		<if test="planMonth != null and planMonth != ''">
+			AND MONTH(DSP.SALE_PLAN_DATE) = #{planMonth}
+		</if>
+		<if test="stationCode != null and stationCode != '-1'">
+			AND STA.STATION_CODE = #{stationCode}
+		</if>
+		ORDER BY TER.IS_DELETE ASC,AGE.IS_DELETE ASC,DSP.SALE_PLAN_DATE ASC
+	</select>
+
+	<select id="findSalePlanByTerminalIdAndDate" resultMap="queryTerminalSalePlanForPageMap"
+		parameterType="map">
+		SELECT
+		TER.TERMINAL_ID,
+		TER.ERP_CODE,
+		TER.TERMINAL_NAME,
+		STA.STATION_ID,
+		STA.STATION_NAME,
+		AGE.AGENT_ID,
+		AGE.AGENT_NAME,
+		OFF.OFFICE_ID,
+		OFF.OFFICE_NAME,
+		ZONE.ZONE_ID,
+		ZONE.ZONE_NAME,
+		DSP.SALE_PLAN_DATE,
+		DSP.CREATE_BY,
+		DSP.CREATE_AT,
+		DSP.SALE_PLAN_ID,
+		DSP.SALE_PLAN_STATUS,
+		DSP.TOTAL_PRICE
+
+		FROM
+		deepureflow_sale_plan DSP
+		LEFT JOIN user_terminal TER ON DSP.TERMINAL_ID = TER.TERMINAL_ID and TER.IS_DELETE=0
+		LEFT JOIN user_agent AGE ON TER.AGENT_ID = AGE.AGENT_ID and AGE.IS_DELETE=0
+		LEFT JOIN system_station STA ON
+		DSP.STATION_ID = STA.STATION_ID and STA.IS_DELETE=0
+		LEFT JOIN system_office OFF ON
+		DSP.OFFICE_ID = OFF.OFFICE_ID and OFF.IS_DELETE=0
+		LEFT JOIN system_zone ZONE ON DSP.ZONE_ID
+		= ZONE.ZONE_ID and ZONE.IS_DELETE=0
+		WHERE DSP.SALE_PLAN_STATUS = 0
+		<if test="terminalId != null and terminalId != ''">
+			AND TER.TERMINAL_ID like CONCAT('%',#{terminalId},'%')
+		</if>
+		<if test="planMonth != null and planMonth != ''">
+			AND SUBSTRING(DSP.SALE_PLAN_DATE,1,10) = #{planMonth}
+		</if>
+	</select>
+</mapper>

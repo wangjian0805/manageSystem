@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tasly.deepureflow.dao.ISecurityDao">
+
+	<resultMap id="userRoleMap"
+		type="com.tasly.deepureflow.domain.security.UserRoleRelationship">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+	</resultMap>
+	<insert id="addRole" parameterType="com.tasly.deepureflow.domain.security.Role">
+		insert into security_role (CODE, NAME, TYPE, VALID)
+		values (#{code}, #{name}, #{type}, 1)
+	</insert>
+
+	<update id="updateRole" parameterType="com.tasly.deepureflow.domain.security.Role">
+	<![CDATA[ 
+      update security_role
+      ]]>
+		<set>
+			<if test="code != null">
+				CODE = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<where>
+			ID = #{id,jdbcType=INTEGER}
+		</where>
+	</update>
+
+	<select id="getAllRoles" resultType="com.tasly.deepureflow.domain.security.Role"
+		parameterType="map">
+		select * from security_role
+		where
+		VALID = 1
+		<if test="queryRoleName !=null and queryRoleName!=''">
+			AND NAME LIKE CONCAT('%',#{queryRoleName},'%')
+		</if>
+		;
+	</select>
+
+
+	<select id="getAllMenus" resultType="com.tasly.deepureflow.domain.security.Menu">
+		select * from security_menu
+		where ACTIVE = 1;
+	</select>
+
+	<select id="getRolesByUserId" resultType="com.tasly.deepureflow.domain.security.Role"
+		parameterType="string">
+		select r.* from security_user_role u inner join
+		security_role r on u.ROLE_ID = r.ID where u.USER_ID = #{userId} AND
+		r.VALID = 1;
+	</select>
+
+	<select id="getRoleByCode" resultType="com.tasly.deepureflow.domain.security.Role"
+		parameterType="string">
+		select r.* from security_role r where r.code =
+		#{roleCode} AND r.VALID = 1;
+	</select>
+
+	<select id="getResoucesByRoleIds" resultType="string"
+		parameterType="string">
+		select r.permission from security_role_resource rr inner
+		join security_resource r on rr.RESOURCE_ID = r.ID where rr.ROLE_ID in
+		(#{roleIds});
+	</select>
+
+	<select id="getResoucesIdsByRoleId" resultType="long"
+		parameterType="long">
+		select r.`ID` from security_role_resource rr inner join
+		security_resource r on rr.RESOURCE_ID = r.ID where rr.`ROLE_ID` =
+		#{roleId};
+	</select>
+
+	<select id="getDataResoucesIdsByRoleId" resultType="long"
+		parameterType="long">
+		select r.`ID` from security_role_data_resource rr inner
+		join security_data_resource r on rr.DATA_RESOURCE_ID = r.ID where
+		rr.`ROLE_ID` = #{roleId};
+	</select>
+
+	<select id="getMenusByRoleIds" resultType="com.tasly.deepureflow.domain.security.Menu"
+		parameterType="string">
+		SELECT m.* FROM `security_role_menu` rm INNER JOIN
+		`security_menu` m ON rm.`MENU_ID` = m.`ID` WHERE m.`ACTIVE` = 1 AND
+		rm.`ROLE_ID` in (#{roleIds}) ORDER BY m.`PRIORITY`
+	</select>
+
+	<select id="getMenuIdsByRoleId" resultType="long" parameterType="long">
+		SELECT m.`ID` FROM `security_role_menu` rm INNER JOIN `security_menu`
+		m ON rm.`MENU_ID` = m.`ID` WHERE m.`ACTIVE` = 1 AND rm.`ROLE_ID` =
+		#{roleId}
+	</select>
+
+	<select id="getUserIdsByRoleId" resultType="string"
+		parameterType="long">
+		SELECT `USER_ID` FROM `security_user_role` WHERE
+		`ROLE_ID` = #{roleId}
+	</select>
+
+	<select id="getAllResources" resultType="com.tasly.deepureflow.domain.security.Resource">
+		SELECT * FROM
+		`security_resource` r WHERE r.`VALID` = 1
+	</select>
+
+	<select id="getAllDataResources" resultType="com.tasly.deepureflow.domain.security.DataResource">
+		SELECT * FROM
+		`security_data_resource`
+	</select>
+
+	<delete id="deleteMenuByRoleId" parameterType="string">
+		DELETE FROM security_role_menu WHERE ROLE_ID = #{roleId,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteMenuByRoleIdAndMenuIds">
+		DELETE FROM security_role_menu
+		<where>
+			ROLE_ID = #{roleId} AND MENU_ID in
+			<foreach item="id" index="index" collection="menuIds" open="("
+				separator="," close=")">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<delete id="deleteResourceByRoleIdAndResourceIds">
+		DELETE FROM security_role_resource
+		<where>
+			ROLE_ID = #{roleId} AND RESOURCE_ID in
+			<foreach item="id" index="index" collection="resourceIds"
+				open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<delete id="deleteDataResourceByRoleIdAndDataResourceIds">
+		DELETE FROM security_role_data_resource
+		<where>
+			ROLE_ID = #{roleId} AND DATA_RESOURCE_ID in
+			<foreach item="id" index="index" collection="dataResourceIds"
+				open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<delete id="deleteResourceByRoleId" parameterType="string">
+		DELETE FROM security_role_resource WHERE ROLE_ID =
+		#{roleId,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteDataResourceByRoleId" parameterType="string">
+		DELETE FROM security_role_data_resource WHERE ROLE_ID =
+		#{roleId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="allocateMenu"
+		parameterType="com.tasly.deepureflow.domain.security.RoleMenuRelationship"
+		useGeneratedKeys="true" keyProperty="ID">
+		insert into security_role_menu(ROLE_ID, MENU_ID) values
+		(#{roleId,jdbcType=INTEGER}, #{menuId,jdbcType=INTEGER})
+	</insert>
+
+	<insert id="allocateResource"
+		parameterType="com.tasly.deepureflow.domain.security.RoleResourceRelationship"
+		useGeneratedKeys="true" keyProperty="ID">
+		insert into security_role_resource(ROLE_ID, RESOURCE_ID) values
+		(#{roleId,jdbcType=INTEGER}, #{resourceId,jdbcType=INTEGER})
+	</insert>
+
+	<insert id="allocateDataResource"
+		parameterType="com.tasly.deepureflow.domain.security.RoleDataResourceRelationship"
+		useGeneratedKeys="true" keyProperty="ID">
+		insert into security_role_data_resource(ROLE_ID, DATA_RESOURCE_ID) values
+		(#{roleId,jdbcType=INTEGER}, #{dataResourceId,jdbcType=INTEGER})
+	</insert>
+
+	<select id="getDataResourceByRole" parameterType="java.util.Map"
+		resultType="string">
+		SELECT dr.statement FROM `security_role_data_resource` rdr
+		LEFT JOIN `security_role`r ON rdr.ROLE_ID = r.ID LEFT JOIN
+		`security_data_resource` dr ON rdr.DATA_RESOURCE_ID = dr.ID WHERE
+		dr.TYPE=#{type} AND r.CODE = #{roleCode}
+	</select>
+
+	<insert id="grantUserRole"
+		parameterType="com.tasly.deepureflow.domain.security.UserRoleRelationship">
+		insert into security_user_role (USER_ID, ROLE_ID) values (#{userId},
+		#{roleId})
+	</insert>
+	
+	<delete id="deleteRoleByUserId" parameterType="string">
+		DELETE FROM security_user_role WHERE USER_ID = #{userId,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="getMemberDataResourceByUserId" parameterType="string"
+		resultType="string">
+		SELECT dr.statement FROM security_role_data_resource rdr
+		join security_user_role ur on ur.ROLE_ID=rdr.ROLE_ID and
+		ur.user_id=#{userId,jdbcType=VARCHAR} JOIN `security_data_resource` dr
+		ON rdr.DATA_RESOURCE_ID = dr.ID
+	</select>
+
+	<select id="findUserRoleByUserId" parameterType="string"
+		resultMap="userRoleMap">
+		SELECT * FROM `security_user_role` WHERE USER_ID = #{userId}
+	</select>
+
+	<update id="updateUserRole"
+		parameterType="com.tasly.deepureflow.domain.security.UserRoleRelationship">
+	<![CDATA[ 
+      update security_user_role
+      ]]>
+		<set>
+			<if test="roleId > 0">
+				ROLE_ID = #{roleId,jdbcType=INTEGER},
+			</if>
+		</set>
+		<where>
+			USER_ID = #{userId,jdbcType=VARCHAR}
+		</where>
+	</update>
+</mapper>

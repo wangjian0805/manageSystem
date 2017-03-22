@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tasly.deepureflow.client.IStationMapper">
+	<resultMap id="BaseResultMap" type="com.tasly.deepureflow.domain.system.Station">
+		<id column="STATION_ID" property="stationId" jdbcType="INTEGER" />
+		<result column="STATION_CODE" property="stationCode" jdbcType="VARCHAR" />
+		<result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+		<result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+	</resultMap>
+	<resultMap id="queryStationForPageMap" type="com.tasly.deepureflow.domain.system.Station">
+		<id column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+		<result column="STATION_CODE" property="stationCode" jdbcType="VARCHAR" />
+		<result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="office"
+			javaType="com.tasly.deepureflow.domain.system.Office">
+			<result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+			<result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<resultMap id="stationForTerminal" type="com.tasly.deepureflow.domain.system.Station">
+		<id column="STATION_ID" property="stationId" jdbcType="INTEGER" />
+		<result column="STATION_CODE" property="stationCode" jdbcType="VARCHAR" />
+		<result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+		<result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+		<result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="user"
+			javaType="com.tasly.deepureflow.domain.user.User">
+			<result column="USER_ID" property="id" jdbcType="VARCHAR" />
+			<result column="USER_NAME" property="username" jdbcType="VARCHAR" />
+			<result column="IS_ACTIVE" property="isactive" jdbcType="BIT" />
+		</association>
+		<!-- 一对一的关系 -->
+		<!-- property: 指的是属性的值, javaType：指的是元素的类型 -->
+		<association property="office"
+			javaType="com.tasly.deepureflow.domain.system.Office">
+			<result column="OFFICE_CODE" property="officeCode" jdbcType="VARCHAR" />
+			<result column="OFFICE_NAME" property="officeName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		STATION_ID, STATION_CODE, STATION_NAME, OFFICE_CODE, IS_DELETE
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.tasly.deepureflow.domain.system.StationExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from system_station
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from system_station
+		where STATION_ID = #{stationId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from system_station
+		where STATION_ID = #{stationId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.tasly.deepureflow.domain.system.StationExample">
+		delete from system_station
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.tasly.deepureflow.domain.system.Station">
+		insert into system_station (STATION_ID, STATION_CODE, STATION_NAME,
+		OFFICE_CODE, IS_DELETE)
+		values (#{stationId,jdbcType=INTEGER}, #{stationCode,jdbcType=VARCHAR},
+		#{stationName,jdbcType=VARCHAR},
+		#{officeCode,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.tasly.deepureflow.domain.system.Station">
+		insert into system_station
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="stationId != null">
+				STATION_ID,
+			</if>
+			<if test="stationCode != null">
+				STATION_CODE,
+			</if>
+			<if test="stationName != null">
+				STATION_NAME,
+			</if>
+			<if test="officeCode != null">
+				OFFICE_CODE,
+			</if>
+			<if test="isDelete != null">
+				IS_DELETE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="stationId != null">
+				#{stationId,jdbcType=INTEGER},
+			</if>
+			<if test="stationCode != null">
+				#{stationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="stationName != null">
+				#{stationName,jdbcType=VARCHAR},
+			</if>
+			<if test="officeCode != null">
+				#{officeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.tasly.deepureflow.domain.system.StationExample"
+		resultType="java.lang.Integer">
+		select count(*) from system_station
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update system_station
+		<set>
+			<if test="record.stationId != null">
+				STATION_ID = #{record.stationId,jdbcType=INTEGER},
+			</if>
+			<if test="record.stationCode != null">
+				STATION_CODE = #{record.stationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.stationName != null">
+				STATION_NAME = #{record.stationName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.officeCode != null">
+				OFFICE_CODE = #{record.officeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isDelete != null">
+				IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update system_station
+		set STATION_ID = #{record.stationId,jdbcType=INTEGER},
+		STATION_CODE = #{record.stationCode,jdbcType=VARCHAR},
+		STATION_NAME = #{record.stationName,jdbcType=VARCHAR},
+		OFFICE_CODE = #{record.officeCode,jdbcType=VARCHAR},
+		IS_DELETE = #{record.isDelete,jdbcType=TINYINT}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.tasly.deepureflow.domain.system.Station">
+		update system_station
+		<set>
+			<if test="stationCode != null">
+				STATION_CODE = #{stationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="stationName != null">
+				STATION_NAME = #{stationName,jdbcType=VARCHAR},
+			</if>
+			<if test="officeCode != null">
+				OFFICE_CODE = #{officeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="isDelete != null">
+				IS_DELETE = #{isDelete,jdbcType=TINYINT},
+			</if>
+		</set>
+		where STATION_ID = #{stationId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.tasly.deepureflow.domain.system.Station">
+		update system_station
+		set STATION_CODE = #{stationCode,jdbcType=VARCHAR},
+		STATION_NAME = #{stationName,jdbcType=VARCHAR},
+		OFFICE_CODE = #{officeCode,jdbcType=VARCHAR},
+		IS_DELETE = #{isDelete,jdbcType=TINYINT}
+		where STATION_ID = #{stationId,jdbcType=INTEGER}
+	</update>
+
+	<select id="stationListForPage" resultMap="queryStationForPageMap"
+		parameterType="map">
+		SELECT
+		station.STATION_ID,
+		station.STATION_CODE,
+		station.STATION_NAME,
+		station.IS_DELETE,
+		office.OFFICE_CODE,
+		office.OFFICE_NAME
+		FROM
+		system_station station
+		LEFT JOIN system_office office ON station.OFFICE_CODE=office.OFFICE_CODE and office.IS_DELETE=0
+		WHERE
+		station.IS_DELETE=0
+	</select>
+
+	<select id="selectCode" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		SELECT
+		ss.STATION_ID
+		FROM
+		system_station ss
+		WHERE
+		ss.STATION_CODE=#{code,jdbcType=VARCHAR}
+		AND ss.IS_DELETE=0
+	</select>
+
+	<select id="queryStationByUser" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		STA.STATION_ID,STA.STATION_CODE,STA.STATION_NAME,STA.IS_DELETE,STA.OFFICE_CODE
+		FROM system_station STA
+		LEFT JOIN security_user_station SUS ON SUS.STATION_CODE=STA.STATION_CODE
+		WHERE STA.IS_DELETE=0 AND SUS.USER_ID=#{userId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="queryStationForTerminal" resultMap="stationForTerminal"
+		parameterType="map">
+		SELECT
+		STA.STATION_ID,
+		STA.STATION_CODE,
+		STA.STATION_NAME,
+		STA.OFFICE_CODE,
+		STA.IS_DELETE,
+		office.OFFICE_CODE,
+		office.OFFICE_NAME,
+		USR.USER_ID,
+		USR.USER_NAME,
+		USR.IS_ACTIVE
+		FROM
+		system_station STA
+		LEFT JOIN security_user_station SUS ON STA.STATION_CODE = SUS.STATION_CODE
+		LEFT JOIN security_user USR ON SUS.USER_ID = USR.USER_ID
+		LEFT JOIN system_office office ON STA.OFFICE_CODE=office.OFFICE_CODE
+		
+		WHERE STA.IS_DELETE=0
+		<if test="officeCodes!=null and officeCodes.size > 0">
+			AND STA.OFFICE_CODE IN 
+			<foreach item="item" index="index" collection="officeCodes"
+				open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		order by CONVERT(STA.STATION_NAME USING gbk)
+	</select>
+</mapper>

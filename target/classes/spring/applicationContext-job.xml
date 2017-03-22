@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://cxf.apache.org/jaxrs
+	http://cxf.apache.org/schemas/jaxrs.xsd
+	http://cxf.apache.org/jaxws
+	http://cxf.apache.org/schemas/jaxws.xsd
+	">
+
+	<!-- 线程执行器配置，用于任务注册 -->
+	<bean id="executor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="100" />
+		<property name="queueCapacity" value="500" />
+	</bean>
+
+	<!-- 调度业务 -->
+	<bean name="planForZoneJobDetail"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.tasly.deepureflow.schedule.PlanForZoneJob" />
+		<property name="name" value="planForZone" />
+		<property name="durability" value="true" />
+	</bean>
+
+	<!-- 调度业务 -->
+
+	<bean id="planForZoneCronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="planForZoneJobDetail" />
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+
+	<bean id="jobFactory" class="com.tasly.deepureflow.util.JobFactory"></bean>
+	<!-- 设置调度 -->
+	<bean id="kaslyScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobFactory" ref="jobFactory"></property>
+		<property name="triggers">
+			<list>
+				<ref bean="planForZoneCronTrigger" />
+			</list>
+		</property>
+		<property name="taskExecutor" ref="executor" />
+
+		<property name="dataSource" ref="dataSource" />
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.scheduler.instanceName">DeepureFlowscheduler</prop>
+				<prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+				<!-- JobStore 配置 -->
+				<prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
+				<!-- 集群配置 -->
+				<prop key="org.quartz.jobStore.isClustered">false</prop>
+				<prop key="org.quartz.jobStore.clusterCheckinInterval">15000</prop>
+				<prop key="org.quartz.jobStore.maxMisfiresToHandleAtATime">1</prop>
+				<!-- 数据源配置 使用DBCP连接池 数据源与dataSource一致 -->
+				<prop key="org.quartz.jobStore.misfireThreshold">120000</prop>
+
+			</props>
+		</property>
+		<property name="schedulerName" value="deepureFlowScheduler" />
+		<property name="overwriteExistingJobs" value="true" />
+
+		<property name="autoStartup" value="true" />
+	</bean>
+</beans>
